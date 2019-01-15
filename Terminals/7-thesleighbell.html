@@ -1,0 +1,870 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="Dan Roberts">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.2.0">
+    
+    
+      
+        <title>The Seighbell - 2018 SANS Holiday Hack Challenge Solution</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.572ca0f0.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.8c900955.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="red" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#the-seighbell" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">ac_unit</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                2018 SANS Holiday Hack Challenge Solution
+              </span>
+              <span class="md-header-nav__topic">
+                The Seighbell
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-nav__button md-logo">
+      
+        <i class="md-icon">ac_unit</i>
+      
+    </a>
+    2018 SANS Holiday Hack Challenge Solution
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../linecon.html" title="LineCon" class="md-nav__link">
+      LineCon
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../castle.html" title="Castle" class="md-nav__link">
+      Castle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Objectives
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/1-orientation.html" title="Orientation" class="md-nav__link">
+      Orientation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/2-cfp.html" title="Directory Browsing" class="md-nav__link">
+      Directory Browsing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/3-sequence.html" title="de Bruijn Sequences" class="md-nav__link">
+      de Bruijn Sequences
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/4-datarepo.html" title="Data Repo Analysis" class="md-nav__link">
+      Data Repo Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/5-adpriv.html" title="AD Privilege Discovery" class="md-nav__link">
+      AD Privilege Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/6-badge.html" title="Badge Manipulation" class="md-nav__link">
+      Badge Manipulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/7-hr.html" title="HR Incident Response" class="md-nav__link">
+      HR Incident Response
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/8-packalyzer.html" title="Network Traffic Forensics" class="md-nav__link">
+      Network Traffic Forensics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/9-ransomware.html" title="Ransomware Discovery" class="md-nav__link">
+      Ransomware Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/10-whodunit.html" title="Who is Behind it All?" class="md-nav__link">
+      Who is Behind it All?
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Terminal Challenges
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Terminal Challenges
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="1-namegame.html" title="The Name Game" class="md-nav__link">
+      The Name Game
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="2-editorskills.html" title="Essential Editor Skills" class="md-nav__link">
+      Essential Editor Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="3-curling.html" title="CURLing Master" class="md-nav__link">
+      CURLing Master
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="4-stallmucking.html" title="Stall Mucking Report" class="md-nav__link">
+      Stall Mucking Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="5-pythonescape.html" title="Python Escape from LA" class="md-nav__link">
+      Python Escape from LA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="6-devopsfail.html" title="DevOps Fail" class="md-nav__link">
+      DevOps Fail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        The Seighbell
+      </label>
+    
+    <a href="7-thesleighbell.html" title="The Seighbell" class="md-nav__link md-nav__link--active">
+      The Seighbell
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="8-forensics.html" title="Lethal ForensicELFication" class="md-nav__link">
+      Lethal ForensicELFication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="9-loganalysis.html" title="Yule Log Analysis" class="md-nav__link">
+      Yule Log Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="10-ventilation.html" title="Ventilation Maze" class="md-nav__link">
+      Ventilation Maze
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../narrative.html" title="Narrative" class="md-nav__link">
+      Narrative
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../eggs.html" title="Easter Eggs" class="md-nav__link">
+      Easter Eggs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../answers.html" title="Answers" class="md-nav__link">
+      Answers
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="the-seighbell">The Seighbell</h1>
+<p>Location: Balcony</p>
+<h2 id="problem">Problem</h2>
+<div class="codehilite"><pre><span></span>I&#39;ll hear the bells on Christmas Day
+Their sweet, familiar sound will play
+  But just one elf,
+  Pulls off the shelf,
+The bells to hang on Santa&#39;s sleigh!
+
+Please call me Shinny Upatree
+I write you now, &#39;cause I would be
+  The one who gets -
+  Whom Santa lets
+The bells to hang on Santa&#39;s sleigh!
+
+But all us elves do want the job,
+Conveying bells through wint&#39;ry mob
+  To be the one
+  Toy making&#39;s done
+The bells to hang on Santa&#39;s sleigh!
+
+To make it fair, the Man devised
+A fair and simple compromise.
+  A random chance,
+  The winner dance!
+The bells to hang on Santa&#39;s sleigh!
+
+Now here I need your hacker skill.
+To be the one would be a thrill!
+  Please do your best,
+  And rig this test
+The bells to hang on Santa&#39;s sleigh!
+
+Complete this challenge by winning the sleighbell lottery for Shinny Upatree.
+elf@062fe4d78ef8:~$ 
+</pre></div>
+
+
+<h3 id="hints">Hints</h3>
+<p>Shinny Upatree introduces this terminal:</p>
+<blockquote>
+<p>Hey! Mind giving ole' Shinny Upatree some help? There's a contest I HAVE to win.</p>
+<p>As long as no one else wins first, I can just keep trying to win the Sleigh Bell Lotto, but this could take forever!</p>
+<p>I'll bet the GNU Debugger can help us. With the PEDA modules installed, it can be prettier. I mean easier.</p>
+</blockquote>
+<p>Shinny also provides a link to a recent SANS Pen Test blog on Using gdb to Call Random Functions: <a href="https://pen-testing.sans.org/blog/2018/12/11/using-gdb-to-call-random-functions">https://pen-testing.sans.org/blog/2018/12/11/using-gdb-to-call-random-functions</a></p>
+<h2 id="solution">Solution</h2>
+<div class="codehilite"><pre><span></span>elf@c69f161150e6:~$ ls -l
+total 40
+lrwxrwxrwx 1 elf  elf     12 Dec 14 16:21 gdb -&gt; /usr/bin/gdb
+lrwxrwxrwx 1 elf  elf     16 Dec 14 16:21 objdump -&gt; /usr/bin/objdump
+-rwxr-xr-x 1 root root 38144 Dec 14 16:22 sleighbell-lotto
+</pre></div>
+
+
+<p>First, use the nm command on the slieghbell-lotto program to list its symbol table.  Grepping for "T" narrows down the results to text entries. </p>
+<div class="codehilite"><pre><span></span>elf@c69f161150e6:~$ nm sleighbell-lotto | grep T
+0000000000207f40 d _GLOBAL_OFFSET_TABLE_
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+0000000000208068 D __TMC_END__
+0000000000001620 T __libc_csu_fini
+00000000000015b0 T __libc_csu_init
+0000000000001624 T _fini
+00000000000008c8 T _init
+0000000000000a00 T _start
+0000000000000c1e T base64_cleanup
+0000000000000c43 T base64_decode
+0000000000000bcc T build_decoding_table
+0000000000000b0a T hmac_sha256
+00000000000014ca T main
+00000000000014b7 T sorry
+0000000000000f18 T tohex
+0000000000000fd7 T winnerwinner
+</pre></div>
+
+
+<p>Looking over the resulting list, winnerwinner sounds interesting.  Start up the gdb debugger and set a breakpoint at the main function using <code>break main</code>, then run the program with <code>run</code>.  </p>
+<div class="codehilite"><pre><span></span>elf@c69f161150e6:~$ gdb -q sleighbell-lotto 
+Reading symbols from sleighbell-lotto...(no debugging symbols found)...done.
+(gdb) continue
+The program is not being run.
+(gdb) break main
+Breakpoint 1 at 0x14ce
+(gdb) run
+Starting program: /home/elf/sleighbell-lotto 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;.
+Breakpoint 1, 0x00005555555554ce in main ()
+</pre></div>
+
+
+<p>When the debugger command comes up, type <code>jump winnerwinner</code> to jump into that function, and we get an instant win! </p>
+<div class="codehilite"><pre><span></span>(gdb) jump winnerwinner
+Continuing at 0x555555554fdb.
+
+                                                     .....          ......      
+                                     ..,;:::::cccodkkkkkkkkkxdc;.   .......     
+                             .&#39;;:codkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx.........    
+                         &#39;:okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx..........   
+                     .;okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdc..........   
+                  .:xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkko;.     ........   
+                &#39;lkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx:.          ......    
+              ;xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkd&#39;                       
+            .xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx&#39;                         
+           .kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx&#39;                           
+           xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx;                             
+          :olodxkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk;                               
+       ..........;;;;coxkkkkkkkkkkkkkkkkkkkkkkc                                 
+     ...................,&#39;,,:lxkkkkkkkkkkkkkd.                                  
+     ..........................&#39;;;:coxkkkkk:                                    
+        ...............................ckd.                                     
+          ...............................                                       
+                ...........................                                     
+                   .......................                                      
+                              ....... ...                                       
+
+With gdb you fixed the race.
+The other elves we did out-pace.
+  And now they&#39;ll see.
+  They&#39;ll all watch me.
+I&#39;ll hang the bells on Santa&#39;s sleigh!
+
+
+Congratulations! You&#39;ve won, and have successfully completed this challenge.
+[Inferior 1 (process 25) exited normally]
+(gdb) 
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="6-devopsfail.html" title="DevOps Fail" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                DevOps Fail
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="8-forensics.html" title="Lethal ForensicELFication" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Lethal ForensicELFication
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.b41f3d20.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

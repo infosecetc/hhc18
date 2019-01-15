@@ -1,0 +1,816 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="Dan Roberts">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.2.0">
+    
+    
+      
+        <title>CURLing Master - 2018 SANS Holiday Hack Challenge Solution</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.572ca0f0.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.8c900955.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="red" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#curling-master" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">ac_unit</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                2018 SANS Holiday Hack Challenge Solution
+              </span>
+              <span class="md-header-nav__topic">
+                CURLing Master
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-nav__button md-logo">
+      
+        <i class="md-icon">ac_unit</i>
+      
+    </a>
+    2018 SANS Holiday Hack Challenge Solution
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../linecon.html" title="LineCon" class="md-nav__link">
+      LineCon
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../castle.html" title="Castle" class="md-nav__link">
+      Castle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Objectives
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/1-orientation.html" title="Orientation" class="md-nav__link">
+      Orientation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/2-cfp.html" title="Directory Browsing" class="md-nav__link">
+      Directory Browsing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/3-sequence.html" title="de Bruijn Sequences" class="md-nav__link">
+      de Bruijn Sequences
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/4-datarepo.html" title="Data Repo Analysis" class="md-nav__link">
+      Data Repo Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/5-adpriv.html" title="AD Privilege Discovery" class="md-nav__link">
+      AD Privilege Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/6-badge.html" title="Badge Manipulation" class="md-nav__link">
+      Badge Manipulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/7-hr.html" title="HR Incident Response" class="md-nav__link">
+      HR Incident Response
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/8-packalyzer.html" title="Network Traffic Forensics" class="md-nav__link">
+      Network Traffic Forensics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/9-ransomware.html" title="Ransomware Discovery" class="md-nav__link">
+      Ransomware Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Objectives/10-whodunit.html" title="Who is Behind it All?" class="md-nav__link">
+      Who is Behind it All?
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Terminal Challenges
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Terminal Challenges
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="1-namegame.html" title="The Name Game" class="md-nav__link">
+      The Name Game
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="2-editorskills.html" title="Essential Editor Skills" class="md-nav__link">
+      Essential Editor Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        CURLing Master
+      </label>
+    
+    <a href="3-curling.html" title="CURLing Master" class="md-nav__link md-nav__link--active">
+      CURLing Master
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="4-stallmucking.html" title="Stall Mucking Report" class="md-nav__link">
+      Stall Mucking Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="5-pythonescape.html" title="Python Escape from LA" class="md-nav__link">
+      Python Escape from LA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="6-devopsfail.html" title="DevOps Fail" class="md-nav__link">
+      DevOps Fail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="7-thesleighbell.html" title="The Seighbell" class="md-nav__link">
+      The Seighbell
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="8-forensics.html" title="Lethal ForensicELFication" class="md-nav__link">
+      Lethal ForensicELFication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="9-loganalysis.html" title="Yule Log Analysis" class="md-nav__link">
+      Yule Log Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="10-ventilation.html" title="Ventilation Maze" class="md-nav__link">
+      Ventilation Maze
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../narrative.html" title="Narrative" class="md-nav__link">
+      Narrative
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../eggs.html" title="Easter Eggs" class="md-nav__link">
+      Easter Eggs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../answers.html" title="Answers" class="md-nav__link">
+      Answers
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="curling-master">CURLing Master</h1>
+<p>Location: West Wing</p>
+<h2 id="problem">Problem</h2>
+<div class="codehilite"><pre><span></span>I am Holly Evergreen, and now you won&#39;t believe:
+Once again the striper stopped; I think I might just leave!
+Bushy set it up to start upon a website call.
+Darned if I can CURL it on - my Linux skills apall.
+
+Could you be our CURLing master - fixing up this mess?
+If you are, there&#39;s one concern you surely must address.
+Something&#39;s off about the conf that Bushy put in place.
+Can you overcome this snag and save us all some face?
+
+  Complete this challenge by submitting the right HTTP 
+  request to the server at http://localhost:8080/ to 
+  get the candy striper started again. You may view 
+  the contents of the nginx.conf file in 
+  /etc/nginx/, if helpful.
+</pre></div>
+
+
+<h2 id="hints">Hints</h2>
+<p>Holly Evergreen introduces the terminal challenge by saying:</p>
+<blockquote>
+<p>Hi, I'm Holly Everygreen.</p>
+<p>Oh that Bushy!</p>
+<p>Sorry to vent, but that brother of mine did something strange.</p>
+<p>The trigger to restart the Candy Striper is apparently an arcane HTTP call or 2.</p>
+<p>I sometimes wonder if all IT folk do strange things with their home networks...</p>
+</blockquote>
+<p>Holly also provides a link to a webpage on HTTP/2.0 Basics: <a href="https://developers.google.com/web/fundamentals/performance/http2/">https://developers.google.com/web/fundamentals/performance/http2/</a></p>
+<h2 id="solution">Solution</h2>
+<p>The challenge hints that we need to send a request using HTTP2 to the web server on localhost port 8080.  The initial attempt results in a strange series of non alphanumeric characters.  A check of the files in the home directory reveal a .bash_history that would contain commands executed by this user during previous sessions.  Using the history command, we can see that curl was executed with the --http2-prior-knowledge option, which means to use HTTP2 directly without upgrading from HTTP/1.1.  Resubmitting the request gives us some HTML that states we need to post "status=on" to activate the candy striper, so we add the -d option and that gives us the win.</p>
+<div class="codehilite"><pre><span></span>elf@b2d082a5b5b2:~$ curl http://localhost:8080
+   ����elf@b2d082a5b5b2:~$ 
+
+elf@b2d082a5b5b2:~$ ls -la
+total 24
+drwxr-xr-x 1 elf  elf  4096 Dec 14 16:15 .
+drwxr-xr-x 1 root root 4096 Dec 14 16:14 ..
+-rw-r--r-- 1 elf  elf   464 Dec 14 16:13 .bash_history
+-rw-r--r-- 1 elf  elf   220 May 15  2017 .bash_logout
+-rw-r--r-- 1 elf  elf  3543 Dec 14 16:15 .bashrc
+-rw-r--r-- 1 elf  elf   675 May 15  2017 .profile
+
+elf@f72adf5c13df:~$ history
+    1  netstat -ant
+    2  ncat --broker -nlvp 9090
+    3  echo &quot;\302\257\_(\343\203\204)_/\302\257&quot; &gt;&gt; /tmp/shruggins
+    4  cat /tmp/shruggins
+    5  curl --http2-prior-knowledge http://localhost:8080/index.php
+
+elf@f72adf5c13df:~$ curl --http2-prior-knowledge http://localhost:8080/index.php
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Candy Striper Turner-On&#39;er&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p&gt;To turn the machine on, simply POST to this URL with parameter &quot;status=on&quot;
+
+ &lt;/body&gt;
+&lt;/html&gt;
+
+elf@1a747f9db027:~$ curl -d &quot;status=on&quot; --http2-prior-knowledge http://localhost:8080/index.php
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Candy Striper Turner-On&#39;er&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p&gt;To turn the machine on, simply POST to this URL with parameter &quot;status=on&quot;
+
+Unencrypted 2.0? He&#39;s such a silly guy.
+That&#39;s the kind of stunt that makes my OWASP friends all cry.
+Truth be told: most major sites are speaking 2.0;
+TLS connections are in place when they do so.
+
+-Holly Evergreen
+&lt;p&gt;Congratulations! You&#39;ve won and have successfully completed this challenge.
+&lt;p&gt;POSTing data in HTTP/2.0.
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+
+
+<p>Answer: <code>curl -d "status=on" --http2-prior-knowledge http://localhost:8080/index.php</code></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="2-editorskills.html" title="Essential Editor Skills" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Essential Editor Skills
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="4-stallmucking.html" title="Stall Mucking Report" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Stall Mucking Report
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.b41f3d20.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

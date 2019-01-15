@@ -1,0 +1,899 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="Dan Roberts">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.2.0">
+    
+    
+      
+        <title>Network Traffic Forensics - 2018 SANS Holiday Hack Challenge Solution</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.572ca0f0.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.8c900955.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="red" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#objective-8-network-traffic-forensics" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">ac_unit</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                2018 SANS Holiday Hack Challenge Solution
+              </span>
+              <span class="md-header-nav__topic">
+                Network Traffic Forensics
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="2018 SANS Holiday Hack Challenge Solution" class="md-nav__button md-logo">
+      
+        <i class="md-icon">ac_unit</i>
+      
+    </a>
+    2018 SANS Holiday Hack Challenge Solution
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../linecon.html" title="LineCon" class="md-nav__link">
+      LineCon
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../castle.html" title="Castle" class="md-nav__link">
+      Castle
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Objectives
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Objectives
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="1-orientation.html" title="Orientation" class="md-nav__link">
+      Orientation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="2-cfp.html" title="Directory Browsing" class="md-nav__link">
+      Directory Browsing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="3-sequence.html" title="de Bruijn Sequences" class="md-nav__link">
+      de Bruijn Sequences
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="4-datarepo.html" title="Data Repo Analysis" class="md-nav__link">
+      Data Repo Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="5-adpriv.html" title="AD Privilege Discovery" class="md-nav__link">
+      AD Privilege Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="6-badge.html" title="Badge Manipulation" class="md-nav__link">
+      Badge Manipulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="7-hr.html" title="HR Incident Response" class="md-nav__link">
+      HR Incident Response
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Network Traffic Forensics
+      </label>
+    
+    <a href="8-packalyzer.html" title="Network Traffic Forensics" class="md-nav__link md-nav__link--active">
+      Network Traffic Forensics
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="9-ransomware.html" title="Ransomware Discovery" class="md-nav__link">
+      Ransomware Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="10-whodunit.html" title="Who is Behind it All?" class="md-nav__link">
+      Who is Behind it All?
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Terminal Challenges
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Terminal Challenges
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/1-namegame.html" title="The Name Game" class="md-nav__link">
+      The Name Game
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/2-editorskills.html" title="Essential Editor Skills" class="md-nav__link">
+      Essential Editor Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/3-curling.html" title="CURLing Master" class="md-nav__link">
+      CURLing Master
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/4-stallmucking.html" title="Stall Mucking Report" class="md-nav__link">
+      Stall Mucking Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/5-pythonescape.html" title="Python Escape from LA" class="md-nav__link">
+      Python Escape from LA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/6-devopsfail.html" title="DevOps Fail" class="md-nav__link">
+      DevOps Fail
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/7-thesleighbell.html" title="The Seighbell" class="md-nav__link">
+      The Seighbell
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/8-forensics.html" title="Lethal ForensicELFication" class="md-nav__link">
+      Lethal ForensicELFication
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/9-loganalysis.html" title="Yule Log Analysis" class="md-nav__link">
+      Yule Log Analysis
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Terminals/10-ventilation.html" title="Ventilation Maze" class="md-nav__link">
+      Ventilation Maze
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../narrative.html" title="Narrative" class="md-nav__link">
+      Narrative
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../eggs.html" title="Easter Eggs" class="md-nav__link">
+      Easter Eggs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../answers.html" title="Answers" class="md-nav__link">
+      Answers
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" title="Problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hints" title="Hints" class="md-nav__link">
+    Hints
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution" title="Solution" class="md-nav__link">
+    Solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="objective-8-network-traffic-forensics">Objective #8: Network Traffic Forensics</h1>
+<h2 id="problem">Problem</h2>
+<p>Santa has introduced a web-based packet capture and analysis tool at <a href="https://packalyzer.kringlecastle.com">https://packalyzer.kringlecastle.com</a> to support the elves and their information security work. Using the system, access and decrypt HTTP/2 network activity. What is the name of the song described in the document sent from Holly Evergreen to Alabaster Snowball? For hints on achieving this objective, please visit SugarPlum Mary and help her with the Python Escape from LA Cranberry Pi terminal challenge.</p>
+<p><img alt="Packlyzer Logon Page" src="img/packalyzer-logonpage.jpg" /></p>
+<h2 id="hints">Hints</h2>
+<p>After solving the Python Escape from LA terminal, SugarPlum Mary provides these hints:</p>
+<blockquote>
+<p>Another elf told me that Packalyzer was rushed and deployed with development code sitting in the web root.</p>
+<p>Apparently, he found this out by looking at HTML comments left behind and was able to grab the server-side source code.</p>
+<p>There was suspicious-looking development code using environment variables to store SSL keys and open up directories.</p>
+<p>This elf then told me that manipulating values in the URL gave back weird and descriptive errors.</p>
+<p>I'm hoping these errors can't be used to compromise SSL on the website and steal logins.</p>
+<p>On a tooootally unrelated note, have you seen the HTTP2 talk at at KringleCon by the Chrises? I never knew HTTP2 was so different!</p>
+</blockquote>
+<p>SugarPlum must really want us to attend the KringleCon talk by Chris Elgee and Chris Davis called "HTTP/2 - Because 1 is the Loneliest Number", because she mentions it not once, but twice!</p>
+<h2 id="solution">Solution</h2>
+<p>Finding nothing noteworthy about the logon page source code, I create an account and log into the webpage.  I'm able to create a packet capture, but it's all encrypted traffic on port 443.</p>
+<p>Looking over the webpage source, I find the following comment that suggests that there is some server side code in app.js.</p>
+<div class="codehilite"><pre><span></span>//File upload Function. All extensions and sizes are validated server-side in app.js
+</pre></div>
+
+
+<p>My initial attempt at loading <code>https://packalyzer.kringlecastle.com/app.js</code> fails with a Not Found error.  Then I notice that images and CSS are being loaded out of the /pub directory, so I try <code>https://packalyzer.kringlecastle.com/pub/app.js</code>, and get a page full of Javascript back.</p>
+<p>I spend some time reading over the code, trying to determine what it does, and a few things stand out.</p>
+<div class="codehilite"><pre><span></span>const dev_mode = true;
+</pre></div>
+
+
+<p>It seems the developers have left some development mode features enabled.  Developers will often put special routines in their programs to help with testing and troubleshooting.  These are supposed to be removed before pushing code to production, since they usually involve dangerous activities like bypassing security checks or exposing sensitive variables in the user interface.  I save a copy of the .js file and search to see where dev_mode is referenced.</p>
+<div class="codehilite"><pre><span></span>C:\hhc18&gt; curl.exe -s -o app.js https://packalyzer.kringlecastle.com/pub/app.js
+
+C:\hhc18&gt; type app.js | find /n &quot;dev_mode&quot;
+[26]const dev_mode = true;
+[27]const key_log_path = ( !dev_mode || __dirname + process.env.DEV + process.en
+v.SSLKEYLOGFILE )
+[86]if (dev_mode) {
+</pre></div>
+
+
+<p>In the block of code starting on line 86, a list of allowed directories is defined.  Under normal conditions, users should only be able to access paths that begin with /pub/ and /uploads/, but with dev_mode enabled, any directory with the same name as an environment variable key will be permitted.  If we can figure out what some of the environment variables are being used, we might be able to find something that the developer didn't intend for us to access. </p>
+<div class="codehilite"><pre><span></span>if (dev_mode) {
+    //Can set env variable to open up directories during dev
+    const env_dirs = load_envs();
+} else {
+    const env_dirs = [&#39;/pub/&#39;,&#39;/uploads/&#39;];
+}
+</pre></div>
+
+
+<p>This line hints that DEV and SSLKEYLOGFILE are environment variables, so those paths should be open to us.</p>
+<div class="codehilite"><pre><span></span>const key_log_path = ( !dev_mode || __dirname + process.env.DEV + process.env.SSLKEYLOGFILE )
+</pre></div>
+
+
+<p>Let's see what happens when we visit those URL's:</p>
+<div class="codehilite"><pre><span></span>C:\hhc18&gt; curl https://packalyzer.kringlecastle.com/sslkeylogfile/
+Error: ENOENT: no such file or directory, open &#39;/opt/http2packalyzer_clientrandom_ssl.log/&#39;
+
+C:\hhc18&gt; https://packalyzer.kringlecastle.com/dev/
+Error: EISDIR: illegal operation on a directory, read
+</pre></div>
+
+
+<p>From this, I'd have to deduce that ssl key log filename is packalyzer_clientrandom_ssl.log, and a /dev directory exists.  Let's put those two things together:</p>
+<div class="codehilite"><pre><span></span>C:\hhc18&gt; curl -s https://packalyzer.kringlecastle.com/dev/packalyzer_clientrandom_ssl.log
+CLIENT_RANDOM 6C9AE5A23560F05E825A4B90F38F93DD6540C8D2EEB35ACC78CE0CFF40933DFA FAF08DD05340CDD46CC1745FEC3223FF9C4E4416861384AD2B2BF957DF7D671FEBB12ADC18B3BA41C183E943B482C352
+CLIENT_RANDOM C1E4FD63396F6464220AE6488C01052EC0FF04A3273F905D398BB6AE1A2B2034 151F2960D6C9E9AD2855F0B22A85155D13C073ED34C5F3CF5FB5040F90F5662022A40558DD702F2B115A92668CE7268B
+CLIENT_RANDOM D94A8791854038E608243FC4EB27FB2CBE40A5C315929CBDC58881E0D8683F9F EE4082BEFAB006A5F5190F84BA62342E471F0C9139D3AF83D0011C19EEED96EB52BF0ED90AA5DEE1EC5AE4955F6D6967
+CLIENT_RANDOM 4CFA5920FE0064A72AA754982567D09A56760D54912B8E10A967C7E9388DD189 9F18407AFACB57DB96325941BB25806ECF528D8DA915BC633B5A2D3738257C48B81994B0F560E5DEEAE8D71346343EA1
+CLIENT_RANDOM 65E4B65F3C16CA2BC684D69FDFAEE53F72C795A12F32CE45202ED1BA9AD5E5EA F05717723276263EFC62BEAE10B157650D4C36327CB4197A95B458792B2189D0FE7C8798ED2B2CCA7836A8BA6EF14277
+&lt;truncated&gt;
+</pre></div>
+
+
+<p>Now we know where to obtain the ssl key log file from, but before downloading it, we need to run another packet capture.  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It's important to download the files in the right order.  Each web connection is assigned a unique key to encrypt its data.  Therefore, the ssl keys we need don't exist until the connections have been made.  The encrypted data and the specific key that encrypted that data both have to be loaded into Wireshark for this to work.</p>
+</div>
+<p>With both the packet capture and the ssl key log file downloaded, we can load these into Wireshark and view the unencrypted contents of the http2 packets.  The ssl key log file goes into protocol preferences for ssl as shown here:</p>
+<p><img alt="Wireshark ssl protocol preferences" src="img/packalyzer-wireshark-prefs.png" /></p>
+<p><img alt="Wireshark ssl protocol preferences" src="img/packalyzer-wireshark-analysis.png" /></p>
+<p>The following credentials were found while analyzing the http2 data packets:</p>
+<table>
+<thead>
+<tr>
+<th>Username</th>
+<th>Password</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alabaster</td>
+<td>Packer-p@re-turntable192</td>
+</tr>
+<tr>
+<td>pepper</td>
+<td>Shiz-Bamer_wabl182</td>
+</tr>
+<tr>
+<td>bushy</td>
+<td>Floppity_Floopy-flab19283</td>
+</tr>
+</tbody>
+</table>
+<p>Alabaster is an admin, so let's try logging on as him first.  I find that there's a saved packet capture in his account that is named "super_secret_packet_capture.pcap".  Download and inspect this pcap in Wireshark, and you'll find an smtp mail transmission that contains a base64 encoded file attachment.  </p>
+<div class="codehilite"><pre><span></span>    220 mail.kringlecastle.com ESMTP Postfix (Ubuntu)
+    EHLO Mail.kringlecastle.com
+    250-mail.kringlecastle.com
+    250-PIPELINING
+    250-SIZE 10240000
+    250-VRFY
+    250-ETRN
+    250-STARTTLS
+    250-ENHANCEDSTATUSCODES
+    250-8BITMIME
+    250 DSN
+
+    MAIL FROM:&lt;Holly.evergreen@mail.kringlecastle.com&gt;
+    250 2.1.0 Ok
+    RCPT TO:&lt;alabaster.snowball@mail.kringlecastle.com&gt;
+    250 2.1.5 Ok
+    DATA
+    354 End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;
+    Date: Fri, 28 Sep 2018 11:33:17 -0400
+    To: alabaster.snowball@mail.kringlecastle.com
+    From: Holly.evergreen@mail.kringlecastle.com
+    Subject: test Fri, 28 Sep 2018 11:33:17 -0400
+    MIME-Version: 1.0
+    Content-Type: multipart/mixed; boundary=&quot;----=_MIME_BOUNDARY_000_11181&quot;
+
+    ------=_MIME_BOUNDARY_000_11181
+    Content-Type: text/plain
+
+    Hey alabaster, 
+
+    Santa said you needed help understanding musical notes for accessing the vault. He said your favorite key was D. Anyways, the following attachment should give you all the information you need about transposing music.
+
+    ------=_MIME_BOUNDARY_000_11181
+    Content-Type: application/octet-stream
+    Content-Transfer-Encoding: BASE64
+    Content-Disposition: attachment
+
+    JVBERi0xLjUKJb/3ov4KOCAwIG9iago8PCAvTGluZWFyaXplZCAxIC9MIDk3ODMxIC9IIFsgNzM4
+    IDE0MCBdIC9PIDEyIC9FIDc3MzQ0IC9OIDIgL1QgOTc1MTcgPj4KZW5kb2JqCiAgICAgICAgICAg
+    &lt;snip&gt;
+    ZDIwYjI1MmU0OWRiPl0gPj4Kc3RyZWFtCnicY2IAASZGRj0FBiYg6yiIZP8OIiWngUhGNRCpIw5m
+    2zMAAFMTA30KZW5kc3RyZWFtCmVuZG9iagogICAgICAgICAgICAgICAgICAgICAgICAgICAgIApz
+    dGFydHhyZWYKMjE2CiUlRU9GCg==
+
+    ------=_MIME_BOUNDARY_000_11181--
+
+
+    .
+
+    250 2.0.0 Ok: queued as 4CF931B5C3C0
+    QUIT
+    221 2.0.0 Bye
+</pre></div>
+
+
+<p>Use a base64 to binary file converter, like the one at <a href="https://www.motobit.com/util/base64-decoder-encoder.asp">https://www.motobit.com/util/base64-decoder-encoder.asp</a> to produce a file.  Since the filename is mysteriously missing from the transmission, I use the file command in my bash shell to check the file type and discover that it is a PDF. </p>
+<div class="codehilite"><pre><span></span>$ file smtp.pdf
+smtp.pdf: PDF document, version <span class="m">1</span>.5
+</pre></div>
+
+
+<p><img alt="Document" src="img/packalyzer-document.pdf" /></p>
+<p>Answer: <strong>Mary Had a Little Lamb</strong></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="7-hr.html" title="HR Incident Response" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                HR Incident Response
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="9-ransomware.html" title="Ransomware Discovery" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Ransomware Discovery
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.b41f3d20.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
